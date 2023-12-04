@@ -1,0 +1,598 @@
+<!-- create by athul -->
+
+{% extends 'company/src/html/base.html' %}
+
+{% block content %}
+{% load static %}
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>
+<!-- Load SheetJS from a CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+
+{% load my_extras %}
+
+<style>
+    .bs{
+        box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.397);
+    }
+    .bs_sm{
+        box-shadow: inset 2px 2px 5px 3px rgba(0, 0, 0, 0.199);
+    }
+    .tb{
+        color: black;
+    }
+    .tg{
+        color: rgb(0, 140, 7);
+    }
+    .tr{
+        color: rgb(218, 0, 0);
+    }
+    .btn_add{
+        background-color: orange;
+        color: black;
+    }
+    .btn_add:hover{
+        background-color: rgb(234, 152, 0);
+        color: black;
+    }
+    ::-webkit-scrollbar{
+        display: none
+    }
+    .bg-pink{
+        background-color: rgb(239, 3, 82)
+    }
+
+
+
+    #ui-datepicker-div {
+        width: 20rem;
+        left: 632px;
+    }
+
+    .ui-datepicker-calendar {
+        display: none;
+    }
+
+    .datepicker {
+        margin-top: 1rem;
+        display: grid;
+        justify-items: center;
+    }
+
+    select>option {
+        background-color: rgb(212, 212, 212);
+    }
+
+    .ui-datepicker-prev {
+        background: white;
+        cursor: pointer;
+    }
+
+    .ui-datepicker-next {
+        background: white;
+        cursor: pointer;
+    }
+
+    .ui-datepicker .ui-datepicker-buttonpane button {
+        color: white;
+        background: black;
+    }
+
+    .ui-datepicker .ui-datepicker-buttonpane button:hover {
+        color: rgb(0, 0, 0);
+        background: rgb(177, 177, 177);
+    }
+    .bar {
+        align-items: center;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .bar .left {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .bar .left input {
+        height: 5vh;
+    }
+</style>
+
+
+<div class="body-wrapper">
+    <br><br><br>
+    
+    <br>
+    
+        <div class="col-sm-12 col-lg-9  ps-2 pe-3" style="height: 80%; width: 100%">
+          <div id="item_get_detail_target">
+            <div class="row m-0" style="height:20%">
+                <div class="card bg-light bs p-3 mb-3">
+                  <center>
+                    <h6>{{cmp1.cname}}</h6>
+                    <h2 class="mb-0">GSTR-1 Report</h2>
+                    <!-- <div class="display">
+                        <div id="d1" style="display: inline-block;"></div>
+                        <div id="d2" style="display: inline-block;"></div>
+                    </div> -->
+
+                </center>  <br>
+                  <div class="bar px-2" style="width: 50%;">
+                    <label style="text-align:left ">From</label><br>
+                    <input name="FromDate" class="inputdate form-control" id="in1" type="date">
+
+                <!-- <div class="bar px-2"> -->
+                    <label style="text-align:left ">To</label><br>
+                    <input name="ToDate" class="inputdate form-control" id="in2" type="date">
+               
+                  </div>
+                  <div class="bar pt-4">
+
+                  <div class="left px-2">
+                    <a class="btn btn-outline-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                        role="button"><i class="fa fa-filter"></i> Filter By
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" onclick="filterTable('All')">All</a>
+                        <a class="dropdown-item" onclick="filterTable('With')">with GSTIN</a>
+                        <a class="dropdown-item" onclick="filterTable('Without')">without GSTIN</a>
+                    </div>
+
+
+                </div>
+</div>
+
+            </div>
+
+
+
+                </div>
+            </div>
+            <!-- <div class="row" style="height: 0.5rem;"></div> -->
+            <div class="row pt-0 m-0" {% if first_item.item_min_stock_maintain %} style="height:39rem;"{% else %}style="height:41.1rem;"{% endif %}>
+                <div class="card p-0 bg-light bs">
+                    <div class="row m-0 p-0 pt-3">
+                        <!-- <div class="col-sm-12 col-lg-3">
+                            <p class="tb fw-bolder pt-2">TRANSACTIONS</p>
+                        </div> -->
+                        <div class="col-sm-12 col-lg-3">
+                            
+                        </div>
+                        
+                        <div class="col-sm-12 col-lg-6 pt-1">
+                            <div class="position-relative">
+                                <!-- <div class="position-absolute" style="margin-top:0.4rem;margin-left: 0.5rem;">
+                                    <span class="fa fa-search fs-5 text-info"></span>
+                                </div> -->
+                            </div>
+                            <!-- <div class="d-flex">
+                                <input id="search_input1" style="padding-inline-start: 2rem;" class="w-100 border-secondary text-dark pt-1 pb-1 pe-1 rounded" type="text" placeholder=" search here..">
+                                <button class="btn p-0 ps-2 pe-2 ms-2" type="button" onclick="exportToExcel()"><span><img width="22px" src="{% static 'assets/excel2.png' %}" alt="no img"></span></button>
+                            </div> -->
+                        </div>
+
+                        
+                            <div class="mt-3" style="overflow: scroll;height: 31rem;">
+
+
+
+
+                              <!-- <div class="card radius-15 " id="pdf-card" style="overflow: auto;">
+                                <div class="card-body" id="exTab2">
+                        
+                                    <ul class="nav nav-tabs row">
+                                        <li class="active col-6 text-center">
+                                            <a href="#1" data-toggle="tab">Sale</a>
+                                        </li>
+                                        <li class="col-6 text-center"><a href="#2" data-toggle="tab">Sale Return</a>
+                                        </li>
+                                    </ul>
+                        
+                        
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="1" data-title="Sale">
+                        
+                                            <table class="table table-responsive-md mt-4 table-hover table-bordered print-only" id="myTable"
+                                                style="background-color: rgba(0, 0, 0, 0.2);">
+                                                <thead>
+                                                    <tr class="text-center" style="background-color: rgba(255, 255, 255, 0.137);">
+                        
+                                                        <th colspan="5" style="text-align: center;">Invoice Details</th>
+                                                        <th rowspan="2" style="text-align: center;">Tax Rate</th>
+                                                        <th rowspan="2" style="text-align: center;">Cess Rate</th>
+                                                        <th rowspan="2" style="text-align: center;">Taxable Value</th>
+                                                        <th colspan="4" style="text-align: center;">Amount</th>
+                                                        <th rowspan="2" style="text-align: center;">Place Of Supply(Name Of State)</th>
+                                                    </tr>
+                                                    <tr class="text-center" style="background-color: rgba(255, 255, 255, 0.137);">
+                                                        <th style="text-align: center;">GSTIN/UIN</th>
+                                                        <th style="text-align: center;">Party Name</th>
+                                                        <th style="text-align: center;">Invoice No</th>
+                                                        <th style="text-align: center;">Date</th>
+                                                        <th style="text-align: center;">Value</th>
+                        
+                                                        <th style="text-align: center;">Integrated Tax</th>
+                                                        <th style="text-align: center;">Central Tax</th>
+                                                        <th style="text-align: center;">State/UT Tax</th>
+                                                        <th style="text-align: center;">Cess</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                   
+                                                </tbody>
+                                            </table>
+                                            <br>
+                        
+                        
+                                        </div>
+                                        <div class="tab-pane" id="2" data-title="Sale return">
+                        
+                                            <table class="table2excel  table table-responsive-md mt-4 table-hover table-bordered "
+                                                style="background-color: rgba(0, 0, 0, 0.2);" id="myTable2">
+                                                <thead>
+                                                    <tr class="text-center" style="background-color: rgba(255, 255, 255, 0.137);">
+                        
+                                                        <th colspan="7" style="text-align: center;">Cr. Note Details</th>
+                                                        <th rowspan="2" style="text-align: center;">Tax Rate</th>
+                                                        <th rowspan="2" style="text-align: center;">Cess Rate</th>
+                                                        <th rowspan="2" style="text-align: center;">Taxable Value</th>
+                                                        <th colspan="4" style="text-align: center;">Amount</th>
+                                                        <th rowspan="2" style="text-align: center;">Place Of Supply(Name Of State)
+                                                        </th>
+                                                    </tr>
+                                                    <tr class="text-center" style="background-color: rgba(255, 255, 255, 0.137);">
+                                                        <th rowspan="2" style="text-align: center;">GSTIN/UIN</th>
+                                                        <th style="text-align: center;">Party Name</th>
+                                                        <th style="text-align: center;">Invoice No</th>
+                                                        <th style="text-align: center;">Invoice Date</th>
+                                                        <th style="text-align: center;">Note No.</th>
+                                                        <th style="text-align: center;">Note Date</th>
+                                                        <th style="text-align: center;">Value</th>
+                        
+                                                        <th style="text-align: center;">Integrated Tax</th>
+                                                        <th style="text-align: center;">Central Tax</th>
+                                                        <th style="text-align: center;">State/UT Tax</th>
+                                                        <th style="text-align: center;">Cess</th>
+                        
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    
+                                                </tbody>
+                                            </table>
+                        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> -->
+
+
+
+
+
+
+
+                              
+                                <table id="myTable" class="table table-bordered table-info table-striped tb table-responsive w-100">
+
+
+                                    <thead>
+                                     
+                                        <tr class="text-center" style="background-color: rgba(255, 255, 255, 0.137);">
+
+                                            <th colspan="5" style="text-align: center;">Invoice Details</th>
+                                            <th rowspan="2" style="text-align: center;">Tax Rate</th>
+                                            <th rowspan="2" style="text-align: center;">Cess Rate</th>
+                                            <th rowspan="2" style="text-align: center;">Taxable Value</th>
+                                            <th colspan="4" style="text-align: center;">Amount</th>
+                                            <th rowspan="2" style="text-align: center;">Place Of Supply(Name Of State)</th>
+                                        </tr>
+                                        <tr class="text-center" style="background-color: rgba(255, 255, 255, 0.137);">
+                                            <th style="text-align: center;">GSTIN/UIN</th>
+                                            <th style="text-align: center;">Party Name</th>
+                                            <th style="text-align: center;">Invoice No</th>
+                                            <th style="text-align: center;">Date</th>
+                                            <th style="text-align: center;">Value</th>
+            
+                                            <th style="text-align: center;">Integrated Tax</th>
+                                            <th style="text-align: center;">Central Tax</th>
+                                            <th style="text-align: center;">State/UT Tax</th>
+                                            <th style="text-align: center;">Cess</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                     
+                                     
+                                    </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+    
+ 
+
+<!-- modal adjustment create start -->
+<!-- <div class="modal modal-lg fade p-0" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog p-0">
+    <div class="modal-content p-0">
+        <div id="item_get_details_for_modal_target">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal 1</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Content for Modal 1 goes here.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+  </div>
+</div> -->
+
+<!-- modal adjustment create end -->
+
+<div class="modal modal-lg fade" id="myModal1" tabindex="-1" aria-labelledby="myModal1Label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="item_get_details_for_modal_target">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal 1</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Content for Modal 1 goes here.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Second Modal -->
+<div class="modal modal-lg fade" id="myModal2" tabindex="-1" aria-labelledby="myModal2Label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="item_transaction_view_or_edit_target">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+    function exportToExcel() {
+        $('.hide_table_text_v').text('')
+        $('.hide_table_text_d').text('')
+        const table = document.getElementById('myTable');
+        const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+        XLSX.writeFile(wb, "table_data.xlsx");
+        $('.hide_table_text_v').html('<span class="fa fa-eye pe-2 tg"></span> View / Edit')
+        $('.hide_table_text_d').html('<span class="fa fa-trash-alt tr" style="padding-inline-start: 0.1rem;padding-inline-end:0.7rem ;"></span> Delete')
+    }
+    $(document).ready(function() {
+        $("#search_input1").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tbody tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value)>-1);
+            });
+        });
+    });
+    $(document).ready(function(){
+        $('#search_item').click(function(){
+            $(this).attr('hidden',true)
+            $('#search_item_input').attr('hidden',false)
+            $('#close_seacrh').attr('hidden',false)
+            $('#add_item_btn').attr('hidden',true)
+        })
+    })
+    $(document).ready(function(){
+        $('#close_seacrh').click(function(){
+            $('#search_item_input').val('')
+            $('#search_item_input').attr('hidden',true)
+            $('#search_item').attr('hidden',false)
+            $('#add_item_btn').attr('hidden',false)
+            $('#close_seacrh').attr('hidden',true)
+        })
+    })
+    function confirm_delete(Id)
+    {
+        swal({
+            title: "Confirmation !",
+            text: "Do you want to Delete this item?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                swal({
+                    title: "Deleted !",
+                    text: "Item Deleted Successfilly!",
+                    icon: "success",
+                    buttons: false,
+                })
+                // 
+                .then((willDelete) => {
+                if (willDelete) {
+                    // Redirect to the delete_teacher view with the teacher's ID
+                    window.location.href = "{% url 'item_delete' 0 %}".replace('0', Id);
+                    
+                } else {
+                    window.location.href = "{% url 'item_delete' 0 %}".replace('0', Id);
+                }
+            });
+                // 
+            } else {
+                swal("Action Cancelled!");
+            }
+        });
+    }
+    function delete_transaction(Id)
+    {
+        swal({
+            title: "Confirmation !",
+            text: "Do you want to Delete this Transaction?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                swal({
+                    title: "Deleted !",
+                    text: "Transaction Deleted Successfilly!",
+                    icon: "success",
+                    buttons: false,
+                })
+                // 
+                .then((willDelete) => {
+                if (willDelete) {
+                    // Redirect to the delete_teacher view with the teacher's ID
+                    window.location.href = "{% url 'transaction_delete' 0 %}".replace('0', Id);
+                    
+                } else {
+                    window.location.href = "{% url 'transaction_delete' 0 %}".replace('0', Id);
+                }
+            });
+                // 
+            } else {
+                swal("Action Cancelled!");
+            }
+        });
+    }
+
+    function item_open_stk_delete(Id)
+    {
+        swal({
+            title: "Confirmation !",
+            text: "Do you want to Delete this Opening Stock Detail?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                swal({
+                    title: "Deleted !",
+                    text: "Opening Stock Deleted Successfilly!",
+                    icon: "success",
+                    buttons: false,
+                })
+                // 
+                .then((willDelete) => {
+                if (willDelete) {
+                    // Redirect to the delete_teacher view with the teacher's ID
+                    window.location.href = "{% url 'item_delete_open_stk' 0 %}".replace('0', Id);
+                    
+                } else {
+                    window.location.href = "{% url 'item_delete_open_stk' 0 %}".replace('0', Id);
+                }
+            });
+                // 
+            } else {
+                swal("Action Cancelled!");
+            }
+        });
+    }
+</script>
+
+
+<script>
+  $(document).ready(function ($) {
+
+
+      $(document).on('click', '.btn_pdf', function (event) {
+          $(document).ready(function () {
+              $('ul.nav-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (event) {
+                  // Get the ID of the activated tab
+                  activatedTabId = $(event.target).attr('href').substring(1);
+                  console.log('Activated tab ID:', activatedTabId);
+              });
+          });
+          var id = activatedTabId;
+          event.preventDefault();
+          var element = document.getElementById(id);
+          element.style.color = 'black';
+          element.style.backgroundColor = '#243e54';
+          var opt =
+          {
+              margin: 1,
+              filename: 'gstr1' + '.pdf',
+              image: { type: 'png', quality: 1.0 },
+              html2canvas: { scale: 3, useCORS: true, backgroundColor: null },
+              jsPDF: { unit: 'in', format: 'a3', orientation: 'portrait' }
+          };
+          html2pdf().set(opt).from(element).save();
+
+      });
+
+  });
+
+
+  function filterTable(filterValue) {
+      $(document).ready(function () {
+          $('ul.nav-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (event) {
+              // Get the ID of the activated tab
+              activatedTabId = $(event.target).attr('href').substring(1);
+              console.log('Activated tab ID:', activatedTabId);
+          });
+      });
+      var id = activatedTabId;
+      const table = document.getElementById(id);
+      const rows = table.getElementsByTagName('tr');
+
+      var startDate = new Date(document.getElementById("in1").value);
+      var endDate = new Date(document.getElementById("in2").value);
+      if (filterValue === 'All') {
+
+
+          for (let i = 2; i < rows.length; i++) {
+              const row = rows[i];
+
+              var dateCell = row.cells[3];
+
+              // Assuming that the date you want to compare is in the first cell of each row
+              // Change this according to your table structure
+              var rowDate = new Date(dateCell.textContent);
+              console.log(rowDate);
+
+              if (rowDate <= endDate && rowDate >= startDate) {
+                  row.style.display = 'table-row';
+              } else {
+                  row.style.display = 'none';
+              }
+          }
+      }
+      else {
+          for (let i = 2; i < rows.length; i++) {
+              const row = rows[i];
+              const cells = row.getElementsByTagName('td');
+              const gstinCell = cells[0];
+              var dateCell = row.cells[3];
+              var rowDate = new Date(dateCell.textContent);
+              if ((filterValue === 'With' && gstinCell.textContent !== '') || (filterValue === 'Without' && gstinCell.textContent === '')) {
+
+                  if (rowDate <= endDate && rowDate >= startDate) {
+                      row.style.display = 'table-row';
+                  } else {
+                      row.style.display = 'none';
+                  }
+              } else {
+                  row.style.display = 'none';
+              }
+          }
+      }
+  }
+</script>
+
+
+{% endblock  %}

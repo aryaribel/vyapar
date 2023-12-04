@@ -4683,6 +4683,81 @@ def view_party(request,id):
   Party=party.objects.filter(company=staff.company.id)
   allmodules= modules_list.objects.get(company=staff.company,status='New')
   return render(request, 'company/view_party.html',{'staff':staff,'allmodules':allmodules,'Party':Party,'getparty':getparty})
+# def GSTR_1page(request):   
+#   return render(request, 'company/gstr1.html')
 
+def gstrr1(request):
+  return render(request, 'company/gstr1.html')
 
+    # if 'uid' in request.session:
+    #     if request.session.has_key('uid'):
+    #         uid = request.session['uid']
+    #     else:
+    #         return redirect('/')
+    #     cmp1 = company.objects.get(id=request.session['uid'])
+    #     # customr = customer.objects.filter(cid=cmp1)
+    #     cn = salescreditnote.objects.all()
+    #     sale=invoice.objects.all()
+    #     ret_invoices = RetainerInvoices.objects.all()
+    #     rec_invoices = recinvoice.objects.all()
+    #     for r in rec_invoices:
+    #         name= r.customername
+    #         x = name.split()
+    #         x.append(" ")
+    #         a = x[0]
+    #         b = x[1]
+            
+    #         cust = customer.objects.filter(firstname=a, lastname=b)
+    #         for j in cust:
+    #             r.gstin= j.gstin
+    #     for i in ret_invoices:
+    #         name= i.customer
+    #         x = name.split()
+    #         x.append(" ")
+    #         a = x[0]
+    #         b = x[1]
+            
+    #         cust = customer.objects.filter(email=i.email,firstname=a, lastname=b)
+    #         for j in cust:
+    #             i.gstin= j.gstin
+            
+    #     for c in cn:
+    #         cname = c.customer
+    #         parts = cname.split()
+    #         if len(parts) == 3:
+    #             c.cust = ' '.join(parts[1:])
+    #         else:
+    #             c.cust = cname
+    #         name=c.cust
+    #         print(name)
+    #         x = name.split()
+    #         x.append(" ")
+    #         a = x[0]
+    #         b = x[1]
+            
+    #         cust = customer.objects.filter(email=c.email,firstname=a, lastname=b)
+    #         for i in cust:
+    #             c.gstin= i.gstin
+            
+    #     for s in sale:
+    #         cname = s.customername
+    #         parts = cname.split()
+    #         if len(parts) == 3:
+    #             s.cust = ' '.join(parts[1:])
+    #         else:
+    #             s.cust = cname
+            
+    #         name=s.cust
+    #         print(name)
+    #         x = name.split()
+    #         x.append(" ")
+    #         a = x[0]
+    #         b = x[1]
+            
+    #         cust = customer.objects.filter(email=s.email,firstname=a, lastname=b)
+    #         for i in cust:
+    #             s.gstin= i.gstin
+            
+
+    #     return render(request,'company/gstr1.html',{'sale':sale,'cmp1':cmp1,'cn':cn,'ret_invoices':ret_invoices,'rec_invoices':rec_invoices})
     
