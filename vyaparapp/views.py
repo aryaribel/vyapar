@@ -4687,7 +4687,7 @@ def view_party(request,id):
 #   return render(request, 'company/gstr1.html')
 
 def gstrr1(request):
-  return render(request, 'company/gstr1.html')
+  return render(request, 'company/gstr_1.html')
 
     # if 'uid' in request.session:
     #     if request.session.has_key('uid'):
@@ -4760,4 +4760,5 @@ def gstrr1(request):
             
 
     #     return render(request,'company/gstr1.html',{'sale':sale,'cmp1':cmp1,'cn':cn,'ret_invoices':ret_invoices,'rec_invoices':rec_invoices})
-    
+def gst1(request):
+    return render(request, 'company/gstr1.html')  
