@@ -207,7 +207,7 @@ urlpatterns = [
     path('challan_bill_pdf_view/<int:id>',views.challanBillPdf, name='challanBillPdf'),
     path('view_challan_bill/<int:id>',views.viewChallan, name='viewChallan'),
     path('gstrr1',views.gstrr1,name='gstrr1'),
-    path('gst1',views.gst1,name='gst1'),
+    path('gstrr2',views.gstrr2,name='gstrr2'),
 
 
     # ===================================== shemeem - end ==================================================
