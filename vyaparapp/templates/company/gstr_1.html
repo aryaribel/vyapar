@@ -16,7 +16,7 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}" />
 {% load my_extras %}
 
 <style>
@@ -201,10 +201,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-3" style="margin-left: 7vh;">
-                                    <!-- <div class="form-group">
-                                        <label for="fromDate" style="color: black; margin-bottom: 1vh;">From Date:</label>
-                                        <input type="date" class="form-control h-100 border-secondary" id="fromDate" style="color: black; background-color: white;" onchange="filterDates()"> 
-                                    </div> -->
+                                  
                                     <div class="form-group px-2">
                                         <label style="text-align:left ">From</label><br>
                                         <input name="FromDate" class="inputdate form-control" id="in1" type="date">
@@ -215,10 +212,7 @@
                                         <label style="text-align:left ">To</label><br>
                                         <input name="ToDate" class="inputdate form-control" id="in2" type="date">
                                     </div>
-                                    <!-- <div class="form-group">
-                                        <label for="toDate" style="color: black; margin-bottom: 1vh;">To Date:</label>
-                                        <input type="date" class="form-control h-100 border-secondary" id="toDate" style="color: black; background-color: white;" onchange="filterDates()">
-                                    </div> -->
+                                   
 
                                 </div>
 
@@ -245,21 +239,90 @@
                                             style="color: black; font-size: small; font-weight: bold;">Print</span>
                                     </button>
 
-                                    <button class="btn mt-3" type="button" data-toggle="modal" data-target="#excelModal"
+                                    <!-- <button class="btn mt-3" type="button" data-toggle="modal" data-target="#excelModal"
                                         onclick="excelmodel()">
                                         <span><img width="30px" src="{% static 'images/import.png' %}"
                                                 alt="no img"></span>
                                         <br><span
                                             style="color: black; font-size: small; font-weight: bold;">Import</span>
-                                    </button>
+                                    </button> -->
+
+                                    <button class="btn mt-3" type="button" onclick="exportAsPDF()"
+                                    style="margin-right: 2vh;">
+                                    <span><img width="30px" src="{% static 'images/pdf.png' %}"
+                                            alt="no img"></span>
+                                    <br><span
+                                        style="color: black; font-size: small; font-weight: bold;">Pdf</span>
+                                </button>
+
                                 </div>
                             </div>
                         </div>
                     </div><br>
 
+<script>
 
-                    <!-- <di class="bar pt-4"> -->
-                    <div class="left px-4">
+function exportAsPDF() {
+            const container = document.getElementById('pdf-card');
+        
+            // Save the original background color
+            const originalBackgroundColor = container.style.backgroundColor;
+        
+            // Set the container's background color to white
+            container.style.backgroundColor = 'white';
+        
+            // Apply styling changes to the container's content
+            const textWhiteElements = container.querySelectorAll('.text');
+            textWhiteElements.forEach(element => {
+            element.style.color = 'black'; // Set text color to black
+            });
+        
+            const tableElements = container.querySelectorAll('table');
+            const tableCells = container.querySelectorAll('td, th');
+            const tableRows = container.querySelectorAll('tr');
+        
+            tableElements.forEach(table => {
+            table.style.backgroundColor = '#ffffff'; // Set background color to white
+            table.style.color = '#000000'; // Set text color to black
+            });
+        
+            tableCells.forEach(cell => {
+            cell.style.backgroundColor = '#ffffff'; // Set background color to white
+            cell.style.color = '#000000'; // Set text color to black
+            cell.style.border = '1px solid black'; // Add a black border
+            });
+        
+            tableRows.forEach(row => {
+            row.style.backgroundColor = '#000000'; // Set background color to black
+            });
+        
+            const pdfOptions = {
+        margin: 0,
+        filename: '{{cmp1.cname}}_Purchase_Order_Details.pdf',
+        image: { type: 'jpeg', quality: 1 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'mm', format: 'a3', orientation: 'portrait' }, // Adjust format and orientation
+        };
+
+        
+            // Generate PDF from the container
+            html2pdf().from(container).set(pdfOptions).save().then(() => {
+
+            // Restore the original background color
+            container.style.backgroundColor = originalBackgroundColor;
+
+            textWhiteElements.forEach(element => {
+                element.style.color = 'white'; // Restore original text color
+
+            // Remove the pdf-background class after generating the PDF
+            container.classList.remove('pdf-background');
+            });
+            window.location.reload();
+            });
+        }
+    </script>
+                    <div class="bar pt-4">
+                    <!-- <div class="left px-4">
                         <a class="btn btn-outline-info" data-toggle="dropdown" aria-haspopup="true"
                             aria-expanded="false" role="button"><i class="fa fa-filter"></i> Filter By
                         </a>
@@ -270,7 +333,35 @@
                         </div>
 
 
-                    </div>
+                    </div> -->
+
+<!-- 
+                    <div class="left px-2">
+                        <a class="btn btn-outline-info" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                            role="button"><i class="fa fa-filter"></i> Filter By
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" onclick="filterTable('All')">All</a>
+                            <a class="dropdown-item" onclick="filterTable('With')">with GSTIN</a>
+                            <a class="dropdown-item" onclick="filterTable('Without')">without GSTIN</a>
+                        </div>
+
+
+</div> -->
+
+<div class="dropdown left px-2">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa fa-filter"></i> Filter By
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" onclick="filterTable('All')">All</a></li>
+      <li><a class="dropdown-item" onclick="filterTable('With')" >With GSTIN</a></li>
+      <li><a class="dropdown-item"  onclick="filterTable('Without')">Without GSTIN</a></li>
+    </ul>
+  </div>
+
+
+
 
 
                     <br>
@@ -1032,7 +1123,7 @@ $("#salereturn").click(function () {
     }
 </script>
 
-<script>
+<!-- <script>
     calculatetotal()
 
     function calculatetotal() {
@@ -1060,7 +1151,7 @@ $("#salereturn").click(function () {
         document.getElementById('unpaidval').textContent = tunpaid
         document.getElementById('totalval').textContent = ttotal
     }
-</script>
+</script> -->
 
 <script>
     function cleardropdown(index) {

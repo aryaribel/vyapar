@@ -19,7 +19,7 @@ from openpyxl import Workbook
 from num2words import num2words
 from django.template.loader import get_template
 from xhtml2pdf import pisa
-
+from vyaparapp.models import company
 
 # Create your views here.
 def home(request):
@@ -4761,4 +4761,10 @@ def gstrr1(request):
 
   #       return render(request,'company/gstr1.html',{'sale':sale,'cmp1':cmp1,'cn':cn,'ret_invoices':ret_invoices,'rec_invoices':rec_invoices})
 def gstrr2(request):
-    return render(request, 'company/gstr_2.html')  
+    comp = company.objects.get(user_id=request.user.id)
+    purchasebill =  PurchaseBill.objects.all()
+    return render(request, 'company/gstr_2.html' , {'purchasebill':purchasebill,'company':comp})  
+
+def gstrnew1(request):
+    comp = company.objects.get(user_id=request.user.id)
+    return render(request, 'company/gstrnew_1.html',{'company':comp})  
