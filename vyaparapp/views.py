@@ -4763,8 +4763,18 @@ def gstrr1(request):
 def gstrr2(request):
     comp = company.objects.get(user_id=request.user.id)
     purchasebill =  PurchaseBill.objects.all()
-    return render(request, 'company/gstr_2.html' , {'purchasebill':purchasebill,'company':comp})  
+    partydata = party.objects.all()
+    # customr = customer.objects.filter(cid=cmp1)
+    # cn = salescreditnote.objects.all()
+    # sale=invoice.objects.all()
+    # ret_invoices = RetainerInvoices.objects.all()
+    # rec_invoices = recinvoice.objects.all()
+    return render(request, 'company/gstr_2.html' , {'purchasebill':purchasebill,'company':comp,'partydata':partydata})  
 
 def gstrnew1(request):
     comp = company.objects.get(user_id=request.user.id)
     return render(request, 'company/gstrnew_1.html',{'company':comp})  
+
+
+
+# PurchaseBill, PurchaseBillItem, PurchaseBillTransactionHistory    
