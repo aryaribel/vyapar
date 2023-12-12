@@ -22,7 +22,7 @@ urlpatterns = [
     path('sale_return_cr', views.sale_return_cr, name='sale_return_cr'),
 
     # created by athul
-    path('settings', views.settings, name='settings'),
+    # path('settings', views.settings, name='settings'),
     path('hide_options', views.hide_options, name='hide_options'),
 
     path('staffhome', views.staffhome, name='staffhome'),
@@ -206,9 +206,9 @@ urlpatterns = [
     path('download_challan_sample_file',views.downloadChallanSampleImportFile, name = 'downloadChallanSampleImportFile'),
     path('challan_bill_pdf_view/<int:id>',views.challanBillPdf, name='challanBillPdf'),
     path('view_challan_bill/<int:id>',views.viewChallan, name='viewChallan'),
-    path('gstrr1',views.gstrr1,name='gstrr1'),
     path('gstrr2',views.gstrr2,name='gstrr2'),
     path('gstrnew1',views.gstrnew1,name='gstrnew1'),
+    path('sharepurchaseBillToEmail',views.sharepurchaseBillToEmail,name='sharepurchaseBillToEmail'),
 
 
     # ===================================== shemeem - end ==================================================

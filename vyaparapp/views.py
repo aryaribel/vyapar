@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.models import User, auth
 from django.utils.text import capfirst
 from django.contrib import messages
@@ -20,6 +20,53 @@ from num2words import num2words
 from django.template.loader import get_template
 from xhtml2pdf import pisa
 from vyaparapp.models import company
+from io import BytesIO
+from django.db.models import F
+from django.core.mail import send_mail, EmailMultiAlternatives
+from django.utils.html import strip_tags
+from reportlab.lib import colors
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.views.decorators.http import require_POST
+from django.db.models import Sum
+from django.views.decorators.csrf import csrf_exempt
+from django.core.mail import send_mail, EmailMessage
+from openpyxl import load_workbook, Workbook
+from openpyxl.styles import Font, Protection, Alignment
+from django.template import Context, Template
+
+from django.conf import settings
+# from .forms import EmailForm
+
+# from vyaparapp.forms import EmailForm
+# from datetime import datetime,date, timedelta
+# from bs4 import BeautifulSoup
+# import io
+# import os
+# import tempfile
+
+# from django.http import FileResponse
+# from django.urls import reverse
+# from itertools import groupby
+# from django.core import serializers
+# from reportlab.pdfgen import canvas
+# from reportlab.lib.pagesizes import letter, landscape
+# from reportlab.lib.pagesizes import A4
+# from reportlab.platypus import SimpleDocTemplate, Table, TableStyle,Paragraph
+# from reportlab.lib.styles import getSampleStyleSheet,ParagraphStyle
+# from django.template.response import TemplateResponse
+# import calendar
+# from calendar import HTMLCalendar
+# from django.template import loader
+# from django.db.models import Max
+# from reportlab.pdfgen import canvas
+
+
+
+
+
+from django.conf import settings
+
 
 # Create your views here.
 def home(request):
@@ -125,16 +172,16 @@ def sale_return_cr(request):
 
 
 # created by athul
-def settings(request):
-  com =  company.objects.get(user = request.user)
-  selected_options = request.session.get('selected_options', None)
+# def settings(request):
+#   com =  company.objects.get(user = request.user)
+#   selected_options = request.session.get('selected_options', None)
   
-  context = {
-              'company' : com,
-              'selected_options': json.dumps(selected_options),
+#   context = {
+#               'company' : com,
+#               'selected_options': json.dumps(selected_options),
               
-          }
-  return render(request, 'company/settings.html',context)
+#           }
+#   return render(request, 'company/settings.html',context)
 
 def hide_options(request):
     
@@ -4683,83 +4730,7 @@ def view_party(request,id):
   Party=party.objects.filter(company=staff.company.id)
   allmodules= modules_list.objects.get(company=staff.company,status='New')
   return render(request, 'company/view_party.html',{'staff':staff,'allmodules':allmodules,'Party':Party,'getparty':getparty})
-# def GSTR_1page(request):   
-#   return render(request, 'company/gstr1.html')
 
-def gstrr1(request):
-  return render(request, 'company/gstr_1.html')
-
-  # if 'uid' in request.session:
-  #       if request.session.has_key('uid'):
-  #           uid = request.session['uid']
-  #       else:
-  #           return redirect('/')
-  #       cmp1 = company.objects.get(id=request.session['uid'])
-  #       # customr = customer.objects.filter(cid=cmp1)
-  #       cn = salescreditnote.objects.all()
-  #       sale=invoice.objects.all()
-  #       ret_invoices = RetainerInvoices.objects.all()
-  #       rec_invoices = recinvoice.objects.all()
-  #       for r in rec_invoices:
-  #           name= r.customername
-  #           x = name.split()
-  #           x.append(" ")
-  #           a = x[0]
-  #           b = x[1]
-            
-  #           cust = customer.objects.filter(firstname=a, lastname=b)
-  #           for j in cust:
-  #               r.gstin= j.gstin
-  #       for i in ret_invoices:
-  #           name= i.customer
-  #           x = name.split()
-  #           x.append(" ")
-  #           a = x[0]
-  #           b = x[1]
-            
-  #           cust = customer.objects.filter(email=i.email,firstname=a, lastname=b)
-  #           for j in cust:
-  #               i.gstin= j.gstin
-            
-  #       for c in cn:
-  #           cname = c.customer
-  #           parts = cname.split()
-  #           if len(parts) == 3:
-  #               c.cust = ' '.join(parts[1:])
-  #           else:
-  #               c.cust = cname
-  #           name=c.cust
-  #           print(name)
-  #           x = name.split()
-  #           x.append(" ")
-  #           a = x[0]
-  #           b = x[1]
-            
-  #           cust = customer.objects.filter(email=c.email,firstname=a, lastname=b)
-  #           for i in cust:
-  #               c.gstin= i.gstin
-            
-  #       for s in sale:
-  #           cname = s.customername
-  #           parts = cname.split()
-  #           if len(parts) == 3:
-  #               s.cust = ' '.join(parts[1:])
-  #           else:
-  #               s.cust = cname
-            
-  #           name=s.cust
-  #           print(name)
-  #           x = name.split()
-  #           x.append(" ")
-  #           a = x[0]
-  #           b = x[1]
-            
-  #           cust = customer.objects.filter(email=s.email,firstname=a, lastname=b)
-  #           for i in cust:
-  #               s.gstin= i.gstin
-            
-
-  #       return render(request,'company/gstr1.html',{'sale':sale,'cmp1':cmp1,'cn':cn,'ret_invoices':ret_invoices,'rec_invoices':rec_invoices})
 def gstrr2(request):
     comp = company.objects.get(user_id=request.user.id)
     purchasebill =  PurchaseBill.objects.all()
@@ -4773,8 +4744,91 @@ def gstrr2(request):
 
 def gstrnew1(request):
     comp = company.objects.get(user_id=request.user.id)
-    return render(request, 'company/gstrnew_1.html',{'company':comp})  
+    return render(request, 'company/gstr_1.html',{'company':comp})  
 
 
 
 # PurchaseBill, PurchaseBillItem, PurchaseBillTransactionHistory    
+def sharepurchaseBillToEmail(request):
+    if request.user:
+        # try:
+            if request.method == 'POST':
+                emails_string = request.POST['email_ids']
+
+                # Split the string by commas and remove any leading or trailing whitespace
+                emails_list = [email.strip() for email in emails_string.split(',')]
+                email_message = request.POST['email_message']
+                # print(emails_list)
+                
+                comp = company.objects.get(user_id=request.user.id)
+                purchasebill =  PurchaseBill.objects.all()
+                partydata = party.objects.all()
+                staff_id = request.session['staff_id']
+                staff =  staff_details.objects.get(id=staff_id)
+                # getparty=party.objects.get(id=id)
+                allmodules= modules_list.objects.get(company=staff.company,status='New')
+
+
+
+                
+                        
+                context = {'company': comp, 'purchasebill': purchasebill,'partydata': partydata, 'staff': staff, 'allmodules': allmodules}
+                template_path = 'company/gstr1_pdf.html'
+                template = get_template(template_path)
+
+                html  = template.render(context)
+                result = BytesIO()
+                pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)#, link_callback=fetch_resources)
+                pdf = result.getvalue()
+                filename = f'Purchase Bill - {company.company_name}.pdf'
+                subject = f"PURCHASE BILL - {company.company_name}"
+                email = EmailMessage(subject, f"Hi,\nPlease find the attached PURCHASE BILL - Bill-{company.company_name}. \n{email_message}\n\n--\nRegards,\n{company.company_name}\n{company.address}\n{company.state} - {company.country}\n{company.contact}", from_email=settings.EMAIL_HOST_USER,to=emails_list)
+                email.attach(filename, pdf, "application/pdf")
+                email.send(fail_silently=False)
+
+                msg = messages.success(request, 'Bill has been shared via email successfully..!')
+                return redirect(gstrnew1)
+        # except Exception as e:
+        #     print(e)
+        #     messages.error(request, f'{e}')
+        #     return redirect(gstrnew1)
+        
+
+# def shareSalesBillToEmail(request,id):
+#     if request.user:
+#         try:
+#             if request.method == 'POST':
+#                 emails_string = request.POST['email_ids']
+
+#                 # Split the string by commas and remove any leading or trailing whitespace
+#                 emails_list = [email.strip() for email in emails_string.split(',')]
+#                 email_message = request.POST['email_message']
+#                 # print(emails_list)
+
+#                 cmp = Company.objects.get( user = request.user.id)
+#                 bill = Sales.objects.get(cid = cmp, bill_no = id)
+#                 items = Sales_items.objects.filter(cid = cmp, sid = bill)
+            
+#                 total = bill.total_amount
+#                 words_total = num2words(total)
+            
+#                 context = {'bill': bill, 'cmp': cmp,'items':items, 'total':words_total}
+#                 template_path = 'sales_bill_pdf.html'
+#                 template = get_template(template_path)
+
+#                 html  = template.render(context)
+#                 result = BytesIO()
+#                 pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)#, link_callback=fetch_resources)
+#                 pdf = result.getvalue()
+#                 filename = f'Sales Bill - {bill.bill_number}.pdf'
+#                 subject = f"SALES BILL - {bill.bill_number}"
+#                 email = EmailMessage(subject, f"Hi,\nPlease find the attached SALES BILL - Bill-{bill.bill_number}. \n{email_message}\n\n--\nRegards,\n{cmp.company_name}\n{cmp.address}\n{cmp.state} - {cmp.country}\n{cmp.phone_number}", from_email=settings.EMAIL_HOST_USER, to=emails_list)
+#                 email.attach(filename, pdf, "application/pdf")
+#                 email.send(fail_silently=False)
+
+#                 messages.success(request, 'Bill has been shared via email successfully..!')
+#                 return redirect(viewSalesBill,id)
+#         except Exception as e:
+#             print(e)
+#             messages.error(request, f'{e}')
+#             return redirect(viewSalesBill, id)        

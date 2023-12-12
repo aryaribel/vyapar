@@ -181,18 +181,18 @@
                                     <form action="" style="background-color: #3B71CA ;">
                                         <ul class="nav nav-tabs row mx-3">
                                             <li class="col-sm-6 text-center" id="sale">
-                                                <a href="#1" data-toggle="tab">Sale</a>
+                                                <a href="#1" data-toggle="tab">Bill details</a>
                                             </li>
-                                            <li class="col-6 text-center" id="salereturn"><a href="#2"
+                                            <!-- <li class="col-6 text-center" id="salereturn"><a href="#2"
                                                     data-toggle="tab">Sale Return</a>
-                                            </li>
+                                            </li> -->
                                         </ul>
                                         <div class="row m-0 p-0 pt-3 table-responsive" id="salediv">
 
                                             <div class="col-sm-12 col-lg-3">
-                                                <table id="myTable" id="tablediv"
+                                                <table id="myTable" 
                                                     class="table table-bordered table-info table-striped tb  w-100"
-                                                    id="billtable" style="text-align: center;">
+                                                    style="text-align: center;">
                                                   
                                                     <thead>
 
@@ -289,7 +289,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row m-0 p-0 pt-3 table-responsive" id="salereturndiv"
+                                        <!-- <div class="row m-0 p-0 pt-3 table-responsive" id="salereturndiv"
                                             style="display: none;">
 
                                             <div class="col-sm-12 col-lg-3">
@@ -358,10 +358,10 @@
                                                             <td>{{i.igst}}</td>
                                                             <td>{{i.cgst}}</td>
                                                             <td>{{i.sgst}}</td>
-                                                            <!-- {% endif %} -->
+                                                             {% endif %} -->
 
 
-
+<!-- 
                                                             <td>0</td>
                                                             <td id="sply">{{i.supplyplace}}</td>
                                                         </tr>
@@ -373,8 +373,8 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                        </div>
-                                        <script>
+                                        </div>  -->
+                                        <!-- <script>
                                             $(document).ready(function () {
 
 
@@ -394,7 +394,7 @@
                                                     $("#sale").css("border-bottom", "none");
                                                 });
                                             });
-                                        </script>
+                                        </script> -->
 
                                 </div>
                             </div>
@@ -410,7 +410,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
             <div class="modal-header" style="background: rgb(32, 35, 37);">
-                <h5 class="m-3 text-uppercase" id="shareBillEmailLabel">Share Gstr1 Via Email</h5>
+                <h5 class="m-3 text-uppercase" id="shareBillEmailLabel">Share Gstr2 Via Email</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
@@ -613,62 +613,65 @@
 
 </script>
 
+
+
 <script>
-    function filterTable(filterValue) {
-        $(document).ready(function () {
-            $('ul.nav-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (event) {
-                // Get the ID of the activated tab
-                activatedTabId = $(event.target).attr('href').substring(1);
-                console.log('Activated tab ID:', activatedTabId);
-            });
-        });
-        var id = activatedTabId;
-        const table = document.getElementById(id);
-        const rows = table.getElementsByTagName('tr');
+      function filterTable(filterValue) {
+            // $(document).ready(function () {
+            //     $('ul.nav-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (event) {
+            //         // Get the ID of the activated tab
+            //         activatedTabId = $(event.target).attr('href').substring(1);
+            //         console.log('Activated tab ID:', activatedTabId);
+            //     });
+            // });
+            // var id = activatedTabId;
+            const table = document.getElementById('myTable');
+            const rows = table.getElementsByTagName('tr');
 
-        var startDate = new Date(document.getElementById("in1").value);
-        var endDate = new Date(document.getElementById("in2").value);
-        if (filterValue === 'All') {
+            var startDate = new Date(document.getElementById("in1").value);
+            var endDate = new Date(document.getElementById("in2").value);
+            if (filterValue === 'All') {
 
 
-            for (let i = 2; i < rows.length; i++) {
-                const row = rows[i];
+                for (let i = 2; i < rows.length; i++) {
+                    const row = rows[i];
 
-                var dateCell = row.cells[3];
+                    var dateCell = row.cells[3];
 
-                // Assuming that the date you want to compare is in the first cell of each row
-                // Change this according to your table structure
-                var rowDate = new Date(dateCell.textContent);
-                console.log(rowDate);
-
-                if (rowDate <= endDate && rowDate >= startDate) {
-                    row.style.display = 'table-row';
-                } else {
-                    row.style.display = 'none';
-                }
-            }
-        }
-        else {
-            for (let i = 2; i < rows.length; i++) {
-                const row = rows[i];
-                const cells = row.getElementsByTagName('td');
-                const gstinCell = cells[0];
-                var dateCell = row.cells[3];
-                var rowDate = new Date(dateCell.textContent);
-                if ((filterValue === 'With' && gstinCell.textContent !== '') || (filterValue === 'Without' && gstinCell.textContent === '')) {
+                    // Assuming that the date you want to compare is in the first cell of each row
+                    // Change this according to your table structure
+                    var rowDate = new Date(dateCell.textContent);
+                    console.log(rowDate);
 
                     if (rowDate <= endDate && rowDate >= startDate) {
                         row.style.display = 'table-row';
                     } else {
                         row.style.display = 'none';
                     }
-                } else {
-                    row.style.display = 'none';
+                }
+            }
+            else {
+                for (let i = 2; i < rows.length; i++) {
+                    const row = rows[i];
+                    const cells = row.getElementsByTagName('td');
+                    const gstinCell = cells[0];
+                    var dateCell = row.cells[3];
+                    var rowDate = new Date(dateCell.textContent);
+                    if ((filterValue === 'With' && gstinCell.textContent !== '') || (filterValue === 'Without' && gstinCell.textContent === '')) {
+
+                        if (rowDate <= endDate && rowDate >= startDate) {
+                            row.style.display = 'table-row';
+                        } else {
+                            row.style.display = 'none';
+                        }
+                    } else {
+                        row.style.display = 'none';
+                    }
                 }
             }
         }
-    }
 </script>
+
 
 
 
