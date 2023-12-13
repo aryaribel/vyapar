@@ -206,12 +206,16 @@ urlpatterns = [
     path('download_challan_sample_file',views.downloadChallanSampleImportFile, name = 'downloadChallanSampleImportFile'),
     path('challan_bill_pdf_view/<int:id>',views.challanBillPdf, name='challanBillPdf'),
     path('view_challan_bill/<int:id>',views.viewChallan, name='viewChallan'),
+    # ===================================== shemeem - end ==================================================
+
+
     path('gstrr2',views.gstrr2,name='gstrr2'),
     path('gstrnew1',views.gstrnew1,name='gstrnew1'),
     path('sharepurchaseBillToEmail',views.sharepurchaseBillToEmail,name='sharepurchaseBillToEmail'),
+    path('shareGSTR2purchaseBillToEmail',views.shareGSTR2purchaseBillToEmail,name='shareGSTR2purchaseBillToEmail'),
 
+    # ===================================== arya - end ==================================================
 
-    # ===================================== shemeem - end ==================================================
     
     re_path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
     

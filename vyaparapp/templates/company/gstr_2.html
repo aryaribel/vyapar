@@ -1,7 +1,6 @@
 {% extends 'company/src/html/base.html' %}
 {% block content %}
 {% load social_share %}
-{% load mathfilters %}
 
 {% load static %}
 
@@ -352,8 +351,7 @@
                                                             <td>{{i.subtotal}}</td>
                                                             {% if i.supply == cmp1.state %}
                                                             <td>0</td>
-                                                            <td>{{ i.taxamount|div:2 }}</td>
-                                                            <td>{{ i.taxamount|div:2 }}</td>
+                                                           
                                                             {% else %}
                                                             <td>{{i.igst}}</td>
                                                             <td>{{i.cgst}}</td>
@@ -417,7 +415,7 @@
             <div class="modal-body" style="background: rgb(32, 35, 37);">
                 <div class="card p-3 m-3">
 
-                    <form action="#" method="post" class="needs-validation" id="share_to_email_form" autocomplete="off">
+                    <form action="{% url 'shareGSTR2purchaseBillToEmail' %}" method="post" class="needs-validation" id="share_to_email_form" autocomplete="off">
                         {% csrf_token %}
                         <div class="form-group">
                             <label for="emailIds">Email IDs</label>
@@ -452,54 +450,18 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
+    {% for message in messages %}
 
+    <script>
+      let msg = '{{message}}';
+      alert(msg);
+    </script>
+    {% endfor %}
 
 <script>
 
 
-    $(document).ready(function () {
-        $('#share_with_email').on('click', function () {
-            var emailsInput = document.getElementById('emailIds');
-            var emailsString = emailsInput.value.trim();
-
-            var emails = emailsString.split(',').map(function (email) {
-                return email.trim();
-            });
-
-            var emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-
-            var invalidEmails = []
-            if (emailsString == "") {
-                alert('Enter valid email addresses..')
-            }
-            else {
-                for (var i = 0; i < emails.length; i++) {
-                    var currentEmail = emails[i];
-
-                    if (currentEmail != "" && !emailRegex.test(currentEmail)) {
-                        console.log(currentEmail + ' is invalid!');
-                        invalidEmails.push(currentEmail)
-                    }
-                }
-
-                if (invalidEmails.length > 0) {
-                    alert('Invalid emails..Please check!\n' + invalidEmails)
-                    // alert(invalidEmails)
-                } else {
-                    $('#share_to_email_form').submit();
-                }
-            }
-        })
-    });
-
-
-    function shareOnWhatsApp() {
-        var url = window.location.href;
-        var text = url;
-        text = encodeURIComponent(text);
-        var whatsappUrl = "whatsapp://send?text=" + text;
-        window.location.href = whatsappUrl;
-    }
+    
 
 
     // function exportToExcel() {
@@ -672,7 +634,53 @@
         }
 </script>
 
+<script>
+  
+    $(document).ready(function () {
+      $('#share_with_email').on('click', function () {
+        var emailsInput = document.getElementById('emailIds');
+        var emailsString = emailsInput.value.trim();
+  
+        var emails = emailsString.split(',').map(function (email) {
+          return email.trim();
+        });
+  
+        var emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+  
+        var invalidEmails = []
+        if (emailsString == "") {
+          alert('Enter valid email addresses..')
+        }
+        else {
 
+          for (var i = 0; i < emails.length; i++) {
+            var currentEmail = emails[i];
+  
+            if (currentEmail != "" && !emailRegex.test(currentEmail)) {
+              console.log(currentEmail + ' is invalid!');
+              invalidEmails.push(currentEmail)
+            }
+          }
+  
+          if (invalidEmails.length > 0) {
+            alert('Invalid emails..Please check!\n' + invalidEmails)
+            // alert(invalidEmails)
+          } else {
+            $('#share_to_email_form').submit();
+          }
+        }
+      })
+    });
+  
+  
+    function shareOnWhatsApp() {
+      var url = window.location.href;
+      var text = url;
+      text = encodeURIComponent(text);
+      var whatsappUrl = "whatsapp://send?text=" + text;
+      window.location.href = whatsappUrl;
+    }
+</script>
 
 
 {% endblock %}
