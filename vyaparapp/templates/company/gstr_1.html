@@ -94,7 +94,7 @@
 </center>
         </div>
         <div class="col-sm-12  p-0 m-0">
-            <div class=" bg-light bg-light pb-0 mb-0 p-2" style="height:100%;width:100%">
+            <div class=" bg-light bg-light pb-0 mb-0 p-2" style="height:100%;width: 1250px;">
                 <div class="mr-auto d-flex pt-4">
 
                     <!-- <div class="filtr_with_date_between d-flex d-inline h-100" style="margin-right: 700px;">
@@ -130,7 +130,7 @@
 
                     </div>
                     <br><br><br>
-                    <button style="margin-left: 400px;" title="close" class="btn btn-close"
+                    <button style="margin-left: 300px;" title="close" class="btn btn-close"
                     id="closeButton"></button>
 
 
@@ -139,9 +139,9 @@
 
 
                 </div>
-                <div class="option_btn d-flex align-items-center" style="margin-left: 700px;">
+                <div class="option_btn d-flex align-items-center" style="margin-left: 800px;">
                     <button class="btn btn-sm" type="button"
-                        onclick="printSection('print_export_section')" title="PRINT"><span><img
+                        onclick="printSection('pdfdwnld')" title="PRINT"><span><img
                                 width="22px" src="{% static 'assets/printer1.png' %}"
                                 alt="PRINT"></span></button>
                     <button class="btn btn-sm" type="button" onclick="exportToExcel()"
@@ -193,7 +193,6 @@
                                 
 
 
-                                <DIV id="pdfdwnld">
                                     
 
                                     <div id="print_export_section">
@@ -203,16 +202,18 @@
                                                 <li class="col-sm-6 text-center" id="sale">
                                                     <a href="#1" data-toggle="tab">Sale</a>
                                                 </li>
-                                                <li class="col-6 text-center" id="salereturn"><a href="#2"
+                                                <li class="col-sm-6 text-center" id="salereturn"><a href="#2"
                                                         data-toggle="tab">Sale Return</a>
                                                 </li>
                                             </ul>
-                                            <div class="row m-0 p-0 pt-3 table-responsive" id="salediv">
+                                            <DIV id="pdfdwnld">
+
+                                            <div class="row m-0 p-0 pt-3 " id="salediv" data-title="Sale">
 
                                                 <div class="col-sm-12 col-lg-3">
                                                     <table id="myTable" id="tablediv"
-                                                        class="table table-bordered table-info table-striped tb  w-100"
-                                                        id="billtable" style="text-align: center;">
+                                                        class="table table-bordered table-info table-striped tb  table-responsive"
+                                                        id="billtable" style="text-align: center; width: 1260px;">
                                                         <!-- <table
                                                 class="table table-bordered table-secondary table-striped table-hover  mt-3"
                                                 id="tab_logic"> -->
@@ -257,12 +258,12 @@
                                                 </div>
                                             </div>
 
-                                            <div class="row m-0 p-0 pt-3 table-responsive" id="salereturndiv" style="display: none;">
+                                            <div class="row m-0 p-0 pt-3 " id="salereturndiv" style="display: none;" data-title="Sale Return">
 
                                                 <div class="col-sm-12 col-lg-3">
 
                                                     <table id="myTable2" id="tablediv"
-                                                        class="table table-bordered table-info table-striped tb  w-100"
+                                                        class="table table-bordered table-info table-striped tb  w-100 table-responsive"
                                                         id="billtable" style="text-align: center;">
 
 
@@ -332,9 +333,10 @@
                                                 });
                                             </script>
 
-                                    </div>
-                                </div>
+                                </DIV>
                     </form>
+                </div>
+
                 </div>
             </DIV>
 
@@ -489,16 +491,39 @@
     //     XLSX.writeFile(wb, "gstr1.xlsx");
     // }
 
-    function printSection(sectionId) {
-        var printContents = document.getElementById(sectionId).innerHTML;
-        var originalContents = document.body.innerHTML;
+    // function printSection(sectionId) {
+    //     var printContents = document.getElementById(sectionId).innerHTML;
+    //     var originalContents = document.body.innerHTML;
 
-        document.body.innerHTML = printContents;
+    //     document.body.innerHTML = printContents;
 
-        window.print();
+    //     window.print();
 
-        document.body.innerHTML = originalContents;
-    }
+    //     document.body.innerHTML = originalContents;
+    // }
+
+    // function printSection(pdfdwnld) {
+    //             var printContents = document.getElementById(pdfdwnld).innerHTML;
+    //             var originalContents = document.body.innerHTML;
+
+    //             // Create a new temporary div to hold the section content to print
+    //             var printContainer = document.createElement('div');
+    //             printContainer.innerHTML = printContents;
+
+    //             // Append the section content to the body
+    //             document.body.innerHTML = '';
+    //             document.body.appendChild(printContainer);
+
+    //             // Print the contents
+    //             window.print();
+
+    //             // Restore the original content
+    //             document.body.innerHTML = originalContents;
+    //         }
+
+
+
+
     function exportToPDF() {
         var content = document.getElementById('pdfdwnld');
 
@@ -713,5 +738,91 @@ function exportToExcel() {
             });
         });
 </script>
+
+
+
+<script>
+    var activatedTabId = 1;
+
+    // Document ready function to set up event listeners
+    $(document).ready(function () {
+        // Set up event listener for tab activation
+        $('ul.nav-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (event) {
+            // Get the ID of the activated tab
+            activatedTabId = $(event.target).attr('href').substring(1);
+            console.log('Activated tab ID:', activatedTabId);
+        });
+    });
+
+    // Function to print the selected section
+    function printSection() {
+        // Get the activated tab ID when the print function is called
+        var id = activatedTabId;
+
+        // Clone the specified element
+        const pdfCard = document.getElementById('pdfdwnld').cloneNode(true);
+        pdfCard.style.color = 'black';
+        pdfCard.style.backgroundColor = '#243e54';
+
+        // Create a new window for printing
+        const printWindow = window.open('', '');
+        const pageTitle = printWindow.document.createElement('h1');
+        pageTitle.style.textAlign = "center";
+        pageTitle.style.color = "black";
+        pageTitle.textContent = 'GSTR1';
+
+        const h1Element = printWindow.document.createElement('h2');
+        h1Element.style.color = "black";
+        h1Element.textAlign = "center";
+        // h1Element.textContent = (id === 'salediv') ? 'Sale' : 'Sale Return';
+        if (id == 'salediv') {
+                h1Element.textContent = "Sale";
+            }
+            else {
+                h1Element.textContent = "Sale Return";
+            }
+        // Create a style element and set its content
+        var styleElement = printWindow.document.createElement("style");
+        styleElement.textContent = `
+            body {
+                background-color: #333;
+                color : black;
+                font-family: Arial, sans-serif;
+                /* Add more styles as needed */
+            }
+            h2, h1 {
+                color: #333;
+                /* Add more styles as needed */
+            }
+        `;
+
+        // Append elements to the new window
+        printWindow.document.body.appendChild(pageTitle);
+        printWindow.document.body.appendChild(h1Element);
+        printWindow.document.body.appendChild(pdfCard);
+
+        // Copy stylesheets from the original document
+        const stylesheets = document.styleSheets;
+        for (let i = 0; i < stylesheets.length; i++) {
+            const stylesheet = stylesheets[i];
+            if (stylesheet.href) {
+                const link = printWindow.document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = stylesheet.href;
+                printWindow.document.head.appendChild(link);
+            }
+        }
+
+        // Trigger the print dialog for the new window
+        printWindow.print();
+
+        // Close the new window after printing
+        printWindow.close();
+    }
+</script>
+
+
+
+
 
 {% endblock %}
