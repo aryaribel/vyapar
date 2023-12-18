@@ -4692,11 +4692,36 @@ def view_party(request,id):
 
 
 ############################ ARYA ER #################################################################################################
+# def gstrr2(request):
+#     if 'staff_id' in request.session:
+#      if request.session.has_key('staff_id'):
+#       staff_id = request.session['staff_id']
+#     else:
+#       return redirect('/')
+#     staff =  staff_details.objects.get(id=staff_id)
+#     comp =  company.objects.get(id = staff.company.id)
+#     # comp = company.objects.get(user_id=request.user.id)
+#     purchasebill =  PurchaseBill.objects.all()
+#     partydata = party.objects.all()   
+#     return render(request, 'company/gstr_2.html' , {'purchasebill':purchasebill,'company':comp,'partydata':partydata})  
+
 def gstrr2(request):
-    comp = company.objects.get(user_id=request.user.id)
-    purchasebill =  PurchaseBill.objects.all()
-    partydata = party.objects.all()   
-    return render(request, 'company/gstr_2.html' , {'purchasebill':purchasebill,'company':comp,'partydata':partydata})  
+    if 'staff_id' in request.session:
+        staff_id = request.session['staff_id']
+    else:
+        return redirect('/')
+
+    staff = staff_details.objects.get(id=staff_id)
+    comp = company.objects.get(id=staff.company.id)
+
+    # Filter PurchaseBill instances related to the specific company
+    purchasebill = PurchaseBill.objects.filter(company=comp)
+
+    # Filter party instances related to the specific company
+    partydata = party.objects.filter(company=comp)
+
+    return render(request, 'company/gstr_2.html', {'purchasebill': purchasebill, 'company': comp, 'partydata': partydata})
+
 
 def gstrnew1(request):
     comp = company.objects.get(user_id=request.user.id)

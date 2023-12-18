@@ -15,9 +15,13 @@
 <!-- Include html2pdf library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-  <script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://unpkg.com/htmx.org@1.9.6"
+    integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
+    crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <style>
     .card-body {
@@ -49,7 +53,8 @@
     #toPayRadio {
         accent-color: red;
     }
-/* 
+
+    /* 
     #toReceiveRadio {
         accent-color: green;
     } */
@@ -80,7 +85,7 @@
 </style>
 
 <div class="body-wrapper">
-    
+
     <br><br><br>
     <div class="row p-0 m-0">
         <div class="row">
@@ -88,10 +93,10 @@
                 style="text-transform:uppercase; font-family: 'Times New Roman', Times, serif;padding-left: 5px;">
                 <b>{{company.company_name}}</b>
             </h1>
-<center>
-<H4 style="font-weight: bolder;">GSTR 1 REPORT</H4>
+            <center>
+                <H4 style="font-weight: bolder;">GSTR 1 REPORT</H4>
 
-</center>
+            </center>
         </div>
         <div class="col-sm-12  p-0 m-0">
             <div class=" bg-light bg-light pb-0 mb-0 p-2" style="height:100%;width: 1250px;">
@@ -111,11 +116,11 @@
                             <input type="submit" value="Submit" style="size: 5px ;">
 
                     </div> -->
-                   
+
 
 
                     <div class="col-md-3">
-                                  
+
                         <div class="form-group px-2">
                             <label style="text-align:left ">From</label><br>
                             <input name="FromDate" class="inputdate form-control" id="in1" type="date">
@@ -126,41 +131,33 @@
                             <label style="text-align:left ">To</label><br>
                             <input name="ToDate" class="inputdate form-control" id="in2" type="date">
                         </div>
-                       
+
 
                     </div>
                     <br><br><br>
-                    <button style="margin-left: 300px;" title="close" class="btn btn-close"
-                    id="closeButton"></button>
+                    <button style="margin-left: 550px;" title="close" class="btn btn-close" id="closeButton"></button>
 
 
 
-                    
+
 
 
                 </div>
-                <div class="option_btn d-flex align-items-center" style="margin-left: 800px;">
-                    <button class="btn btn-sm" type="button"
-                        onclick="printSection('pdfdwnld')" title="PRINT"><span><img
-                                width="22px" src="{% static 'assets/printer1.png' %}"
-                                alt="PRINT"></span></button>
-                    <button class="btn btn-sm" type="button" onclick="exportToExcel()"
-                        title="EXPORT"><span><img width="22px" src="{% static 'assets/excel2.png' %}"
-                                alt="EXPORT"></span></button>
-                    <button class="btn btn-sm" type="button" onclick="exportToPDF()"
-                        title="DOWNLOAD"><span><img width="18px"
-                                src="{% static 'images/pdfdownload.png' %}"
-                                alt="DOWNLOAD"></span></button>
+                <div class="option_btn d-flex align-items-center" style="margin-left: 1000px;">
+                    <button class="btn btn-sm" type="button" onclick="printSection('pdfdwnld')" title="PRINT"><span><img
+                                width="22px" src="{% static 'assets/printer1.png' %}" alt="PRINT"></span></button>
+                    <button class="btn btn-sm" type="button" onclick="exportToExcel()" title="EXPORT"><span><img
+                                width="22px" src="{% static 'assets/excel2.png' %}" alt="EXPORT"></span></button>
+                    <button class="btn btn-sm" type="button" onclick="exportToPDF()" title="DOWNLOAD"><span><img
+                                width="18px" src="{% static 'images/pdfdownload.png' %}" alt="DOWNLOAD"></span></button>
 
                     <a class="text-dark" data-toggle="dropdown">
                         <button class="btn  " title="Share"><i class="fas fa-share"></i></button>
                     </a>
 
                     <div class="dropdown-menu ">
-                        <a class="dropdown-item" data-target="#shareBillEmail"
-                            data-toggle="modal">GMAIL</a>
-                        <a class="dropdown-item" href="javascript:void(0);"
-                            onclick="shareOnWhatsApp()">WhatsApp</a>
+                        <a class="dropdown-item" data-target="#shareBillEmail" data-toggle="modal">GMAIL</a>
+                        <a class="dropdown-item" href="javascript:void(0);" onclick="shareOnWhatsApp()">WhatsApp</a>
                     </div>
 
 
@@ -172,179 +169,187 @@
                     </div> -->
                 </div>
                 <div class="dropdown left px-2 mt-3">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
                         <i class="fa fa-filter"></i> Filter By
                     </button>
-        
+
                     <ul class="dropdown-menu">
-                      <li><a class="dropdown-item" onclick="filterTable('All')">All</a></li>
-                      <li><a class="dropdown-item" onclick="filterTable('With')" >With GSTIN</a></li>
-                      <li><a class="dropdown-item"  onclick="filterTable('Without')">Without GSTIN</a></li>
+                        <li><a class="dropdown-item" onclick="filterTable('All')">All</a></li>
+                        <li><a class="dropdown-item" onclick="filterTable('With')">With GSTIN</a></li>
+                        <li><a class="dropdown-item" onclick="filterTable('Without')">Without GSTIN</a></li>
                     </ul>
-                  </div>
-                 
+                </div>
+
 
                 <!-- <div class="scroll"> -->
-                    <form action="#" method="post" enctype="multipart/form-data" novalidate id="gstr1">
-                        {% csrf_token %}
+                <form action="#" method="post" enctype="multipart/form-data" novalidate id="gstr1">
+                    {% csrf_token %}
 
-                        <div class="row clearfix">
-                            <div class="col-md-12 table-responsive-md mt-3">
-                                
+                    <div class="row clearfix">
+                        <div class="col-md-12 table-responsive-md mt-3">
 
 
-                                    
 
-                                    <div id="print_export_section">
-                                        <br>
-                                        <form action="" style="background-color: #3B71CA ;">
-                                            <ul class="nav nav-tabs row mx-3">
-                                                <li class="col-sm-6 text-center" id="sale">
-                                                    <a href="#1" data-toggle="tab">Sale</a>
-                                                </li>
-                                                <li class="col-sm-6 text-center" id="salereturn"><a href="#2"
-                                                        data-toggle="tab">Sale Return</a>
-                                                </li>
-                                            </ul>
-                                            <DIV id="pdfdwnld">
 
-                                            <div class="row m-0 p-0 pt-3 " id="salediv" data-title="Sale">
 
-                                                <div class="col-sm-12 col-lg-3">
-                                                    <table id="myTable" id="tablediv"
-                                                        class="table table-bordered table-info table-striped tb  table-responsive"
-                                                        id="billtable" style="text-align: center; width: 1260px;">
-                                                        <!-- <table
+                            <div id="print_export_section">
+                                <br>
+
+                                <form action="" style="background-color: #3B71CA ;">
+                                    <ul class="nav nav-tabs row mx-3">
+                                        <li class="col-sm-6 text-center" id="sale">
+                                            <a href="#1" data-toggle="tab">Sale</a>
+                                        </li>
+                                        <li class="col-sm-6 text-center" id="salereturn"><a href="#2"
+                                                data-toggle="tab">Sale Return</a>
+                                        </li>
+                                    </ul>
+
+                                    <DIV id="pdfdwnld">
+
+
+                                        <div class="row m-0 p-0 pt-3 " id="salediv" data-title="Sale">
+
+                                            <div class="col-sm-12 col-lg-3">
+                                                <h4 style="color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important; margin-bottom: 0;">Sale</h4>
+                                                <table id="myTable" id="tablediv"
+                                                    class="table table-bordered table-info table-striped tb  table-responsive"
+                                                    id="billtable" style="text-align: center; width: 1260px;">
+                                                    <!-- <table
                                                 class="table table-bordered table-secondary table-striped table-hover  mt-3"
                                                 id="tab_logic"> -->
-                                                        <thead>
+                                                    <thead>
 
-                                                            <tr class="text-center"
-                                                                style="background-color: rgba(255, 255, 255, 0.137);">
+                                                        <tr class="text-center"
+                                                            style="background-color: rgba(255, 255, 255, 0.137);">
 
-                                                                <th colspan="5" style="text-align: center;">Invoice
-                                                                    Details</th>
-                                                                <th rowspan="2" style="text-align: center;">Tax Rate
-                                                                </th>
-                                                                <th rowspan="2" style="text-align: center;">Cess Rate
-                                                                </th>
-                                                                <th rowspan="2" style="text-align: center;">Taxable
-                                                                    Value</th>
-                                                                <th colspan="4" style="text-align: center;">Amount</th>
-                                                                <th rowspan="2" style="text-align: center;">Place Of
-                                                                    Supply(Name Of State)</th>
-                                                            </tr>
-                                                            <tr class="text-center"
-                                                                style="background-color: rgba(255, 255, 255, 0.137);">
-                                                                <th style="text-align: center;">GSTIN/UIN</th>
-                                                                <th style="text-align: center;">Party Name</th>
-                                                                <th style="text-align: center;">Invoice No</th>
-                                                                <th style="text-align: center;">Date</th>
-                                                                <th style="text-align: center;">Value</th>
+                                                            <th colspan="5" style="text-align: center;">Invoice
+                                                                Details</th>
+                                                            <th rowspan="2" style="text-align: center;">Tax Rate
+                                                            </th>
+                                                            <th rowspan="2" style="text-align: center;">Cess Rate
+                                                            </th>
+                                                            <th rowspan="2" style="text-align: center;">Taxable
+                                                                Value</th>
+                                                            <th colspan="4" style="text-align: center;">Amount</th>
+                                                            <th rowspan="2" style="text-align: center;">Place Of
+                                                                Supply(Name Of State)</th>
+                                                        </tr>
+                                                        <tr class="text-center"
+                                                            style="background-color: rgba(255, 255, 255, 0.137);">
+                                                            <th style="text-align: center;">GSTIN/UIN</th>
+                                                            <th style="text-align: center;">Party Name</th>
+                                                            <th style="text-align: center;">Invoice No</th>
+                                                            <th style="text-align: center;">Date</th>
+                                                            <th style="text-align: center;">Value</th>
 
-                                                                <th style="text-align: center;">Integrated Tax</th>
-                                                                <th style="text-align: center;">Central Tax</th>
-                                                                <th style="text-align: center;">State/UT Tax</th>
-                                                                <th style="text-align: center;">Cess</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="items-table-body">
+                                                            <th style="text-align: center;">Integrated Tax</th>
+                                                            <th style="text-align: center;">Central Tax</th>
+                                                            <th style="text-align: center;">State/UT Tax</th>
+                                                            <th style="text-align: center;">Cess</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="items-table-body">
 
 
 
-                                                        </tbody>
+                                                    </tbody>
 
-                                                    </table>
-                                                </div>
+                                                </table>
                                             </div>
+                                        </div>
 
-                                            <div class="row m-0 p-0 pt-3 " id="salereturndiv" style="display: none;" data-title="Sale Return">
+                                        <div class="row m-0 p-0 pt-3 " id="salereturndiv" style="display: none;"
+                                            data-title="Sale Return">
 
-                                                <div class="col-sm-12 col-lg-3">
+                                            <div class="col-sm-12 col-lg-3">
+                                                <h4 style="color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;;">Sale Return</h4>
 
-                                                    <table id="myTable2" id="tablediv"
-                                                        class="table table-bordered table-info table-striped tb  w-100 table-responsive"
-                                                        id="billtable" style="text-align: center;">
-
-
-                                                        <thead>
-
-                                                            <tr class="text-center"
-                                                                style="background-color: rgba(255, 255, 255, 0.137);">
-
-                                                                <th colspan="7" style="text-align: center;">Cr. Note
-                                                                    Details</th>
-                                                                <th rowspan="2" style="text-align: center;">Tax Rate
-                                                                </th>
-                                                                <th rowspan="2" style="text-align: center;">Cess Rate
-                                                                </th>
-                                                                <th rowspan="2" style="text-align: center;">Taxable
-                                                                    Value</th>
-                                                                <th colspan="4" style="text-align: center;">Amount</th>
-                                                                <th rowspan="2" style="text-align: center;">Place Of
-                                                                    Supply(Name Of
-                                                                    State)
-                                                                </th>
-                                                            </tr>
-                                                            <tr class="text-center"
-                                                                style="background-color: rgba(255, 255, 255, 0.137);">
-                                                                <th rowspan="2" style="text-align: center;">GSTIN/UIN
-                                                                </th>
-                                                                <th style="text-align: center;">Party Name</th>
-                                                                <th style="text-align: center;">Invoice No</th>
-                                                                <th style="text-align: center;">Invoice Date</th>
-                                                                <th style="text-align: center;">Note No.</th>
-                                                                <th style="text-align: center;">Note Date</th>
-                                                                <th style="text-align: center;">Value</th>
-
-                                                                <th style="text-align: center;">Integrated Tax</th>
-                                                                <th style="text-align: center;">Central Tax</th>
-                                                                <th style="text-align: center;">State/UT Tax</th>
-                                                                <th style="text-align: center;">Cess</th>
-
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
+                                                <table id="myTable2" id="tablediv"
+                                                    class="table table-bordered table-info table-striped tb  w-100 table-responsive"
+                                                    id="billtable" style="text-align: center;">
 
 
-                                                        </tbody>
-                                                    </table>
-                                                </div>
+                                                    <thead>
+
+                                                        <tr class="text-center"
+                                                            style="background-color: rgba(255, 255, 255, 0.137);">
+
+                                                            <th colspan="7" style="text-align: center;">Cr. Note
+                                                                Details</th>
+                                                            <th rowspan="2" style="text-align: center;">Tax Rate
+                                                            </th>
+                                                            <th rowspan="2" style="text-align: center;">Cess Rate
+                                                            </th>
+                                                            <th rowspan="2" style="text-align: center;">Taxable
+                                                                Value</th>
+                                                            <th colspan="4" style="text-align: center;">Amount</th>
+                                                            <th rowspan="2" style="text-align: center;">Place Of
+                                                                Supply(Name Of
+                                                                State)
+                                                            </th>
+                                                        </tr>
+                                                        <tr class="text-center"
+                                                            style="background-color: rgba(255, 255, 255, 0.137);">
+                                                            <th rowspan="2" style="text-align: center;">GSTIN/UIN
+                                                            </th>
+                                                            <th style="text-align: center;">Party Name</th>
+                                                            <th style="text-align: center;">Invoice No</th>
+                                                            <th style="text-align: center;">Invoice Date</th>
+                                                            <th style="text-align: center;">Note No.</th>
+                                                            <th style="text-align: center;">Note Date</th>
+                                                            <th style="text-align: center;">Value</th>
+
+                                                            <th style="text-align: center;">Integrated Tax</th>
+                                                            <th style="text-align: center;">Central Tax</th>
+                                                            <th style="text-align: center;">State/UT Tax</th>
+                                                            <th style="text-align: center;">Cess</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+
+
+                                                    </tbody>
+                                                </table>
                                             </div>
-                                            <script>
-                                                $(document).ready(function () {
+                                        </div>
+                                        <script>
+                                            $(document).ready(function () {
 
 
-                                                    $("#sale").click(function () {
-                                                        $("#salediv").show();
-                                                        $("#salereturndiv").hide();//: 3px solid rgb(255, 255, 255);
+                                                $("#sale").click(function () {
+                                                    $("#salediv").show();
+                                                    $("#salereturndiv").hide();//: 3px solid rgb(255, 255, 255);
 
-                                                        $("#sale").css("border-bottom", "3px solid rgb(255, 255, 255)");
-                                                        $("#salereturn").css("border-bottom", "none");
-                                                        // $("#t-btn").css("background-color", "rgb(243, 188, 9)").css("color", "white");
-                                                    });
-
-                                                    $("#salereturn").click(function () {
-                                                        $("#salereturndiv").show();
-                                                        $("#salediv").hide();//: 3p
-                                                        $("#salereturn").css("border-bottom", "3px solid rgb(255, 255, 255)");
-                                                        $("#sale").css("border-bottom", "none");
-                                                    });
+                                                    $("#sale").css("border-bottom", "3px solid rgb(255, 255, 255)");
+                                                    $("#salereturn").css("border-bottom", "none");
+                                                    // $("#t-btn").css("background-color", "rgb(243, 188, 9)").css("color", "white");
                                                 });
-                                            </script>
 
-                                </DIV>
-                    </form>
-                </div>
+                                                $("#salereturn").click(function () {
+                                                    $("#salereturndiv").show();
+                                                    $("#salediv").hide();//: 3p
+                                                    $("#salereturn").css("border-bottom", "3px solid rgb(255, 255, 255)");
+                                                    $("#sale").css("border-bottom", "none");
+                                                });
+                                            });
+                                        </script>
+                                    </DIV>
 
-                </div>
-            </DIV>
+                                </form>
 
+                            </div>
+
+                        </div>
+                    </DIV>
+                </form>
+            </div>
         </div>
     </div>
-</div>
 
-<!-- <div class="modal fade" id="shareBillEmail">
+    <!-- <div class="modal fade" id="shareBillEmail">
     <div class="modal-dialog modal-xl">
         <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
             <div class="modal-header" style="background: rgb(32, 35, 37);">
@@ -381,41 +386,43 @@
 </div> -->
 
 
- <!-- Share bill Modal -->
- <div class="modal fade" id="shareBillEmail">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
-        <div class="modal-header" style="background: rgb(32, 35, 37);">
-          <h5 class="m-3 text-uppercase" id="shareBillEmailLabel">Share GSTR1 Via Email</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body" style="background: rgb(32, 35, 37);">
-          <div class="card p-3 m-3">
-            <form action="{% url 'sharepurchaseBillToEmail' %}" method="post" class="needs-validation"
-              id="share_to_email_form" autocomplete="off">
-              {% csrf_token %}
-              <div class="form-group">
-                <label for="emailIds">Email IDs</label>
-                <textarea class="form-control text-dark" name="email_ids" id="emailIds" rows="5"
-                  placeholder="Multiple emails can be added by separating with a comma(,)." required></textarea>
-              </div>
-              <div class="form-group mt-2">
-                <label for="item_unitname">Message(optional)</label>
-                <textarea name="email_message" id="email_message" class="text-dark form-control" cols=""
-                  rows="4" placeholder="This message will be sent along with Bill details."></textarea>
-              </div>
-            </form>
-          </div>
-          <div class="modal-footer d-flex justify-content-center" style="border-top: 1px solid #ffff;">
-            <input type="submit" id="share_with_email"
-              class="submitShareEmailBtn rounded-pill text-grey w-50 my-4 mx-3" value="SEND MAIL">
-          </div>
-        </div>
+    <!-- Share bill Modal -->
+    <div class="modal fade" id="shareBillEmail">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
+                <div class="modal-header" style="background: rgb(32, 35, 37);">
+                    <h5 class="m-3 text-uppercase" id="shareBillEmailLabel">Share GSTR1 Via Email</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body" style="background: rgb(32, 35, 37);">
+                    <div class="card p-3 m-3">
+                        <form action="{% url 'sharepurchaseBillToEmail' %}" method="post" class="needs-validation"
+                            id="share_to_email_form" autocomplete="off">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="emailIds">Email IDs</label>
+                                <textarea class="form-control text-dark" name="email_ids" id="emailIds" rows="5"
+                                    placeholder="Multiple emails can be added by separating with a comma(,)."
+                                    required></textarea>
+                            </div>
+                            <div class="form-group mt-2">
+                                <label for="item_unitname">Message(optional)</label>
+                                <textarea name="email_message" id="email_message" class="text-dark form-control" cols=""
+                                    rows="4"
+                                    placeholder="This message will be sent along with Bill details."></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer d-flex justify-content-center" style="border-top: 1px solid #ffff;">
+                        <input type="submit" id="share_with_email"
+                            class="submitShareEmailBtn rounded-pill text-grey w-50 my-4 mx-3" value="SEND MAIL">
+                    </div>
+                </div>
 
-      </div>
+            </div>
+        </div>
     </div>
-  </div>
 
 </div>
 <script src="https://code.jquery.com/jquery-3.x.x.min.js"></script>
@@ -427,15 +434,15 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
     integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
     crossorigin="anonymous"></script>
-   
-    {% for message in messages %}
 
-    <script>
-      let msg = '{{message}}';
-      alert(msg);
-    </script>
-    {% endfor %}
-    
+{% for message in messages %}
+
+<script>
+    let msg = '{{message}}';
+    alert(msg);
+</script>
+{% endfor %}
+
 
 <script>
 
@@ -546,80 +553,80 @@
         var dropdownContent = document.getElementById("myDropdown");
         dropdownContent.style.display = (dropdownContent.style.display === "block") ? "none" : "block";
     }
-function exportToExcel() {
-    const table1 = document.getElementById('myTable');
-    const table2 = document.getElementById('myTable2');
+    function exportToExcel() {
+        const table1 = document.getElementById('myTable');
+        const table2 = document.getElementById('myTable2');
 
-    const wb = XLSX.utils.book_new();
+        const wb = XLSX.utils.book_new();
 
-    const ws1 = XLSX.utils.table_to_sheet(table1);
-    const ws2 = XLSX.utils.table_to_sheet(table2);
+        const ws1 = XLSX.utils.table_to_sheet(table1);
+        const ws2 = XLSX.utils.table_to_sheet(table2);
 
-    XLSX.utils.book_append_sheet(wb, ws1, 'Sale'); // Add the first sheet to the workbook
-    XLSX.utils.book_append_sheet(wb, ws2, 'Sale return'); // Add the second sheet to the workbook
+        XLSX.utils.book_append_sheet(wb, ws1, 'Sale'); // Add the first sheet to the workbook
+        XLSX.utils.book_append_sheet(wb, ws2, 'Sale return'); // Add the second sheet to the workbook
 
-    XLSX.writeFile(wb, 'gstr1.xlsx');
-}
+        XLSX.writeFile(wb, 'gstr1.xlsx');
+    }
 </script>
 <script>
-                        var table = document.getElementById("myTable");
+    var table = document.getElementById("myTable");
 
-                        var fromDate;
-                        $('#in1').on('change', function () {
-                            fromDate = $(this).val();
-                            $('#in2').prop('min', function () {
-                                return fromDate
-                            })
-                            var startDate = new Date(document.getElementById("in1").value);
-                            // var endDate = new Date(document.getElementById("in2").value);
-                            var rows = table.getElementsByTagName("tr");
+    var fromDate;
+    $('#in1').on('change', function () {
+        fromDate = $(this).val();
+        $('#in2').prop('min', function () {
+            return fromDate
+        })
+        var startDate = new Date(document.getElementById("in1").value);
+        // var endDate = new Date(document.getElementById("in2").value);
+        var rows = table.getElementsByTagName("tr");
 
-                            for (var i = 2; i < rows.length; i++) {
-                                var row = rows[i];
-                                var dateCell = row.cells[3];
-                                var rowDate = new Date(dateCell.textContent);
+        for (var i = 2; i < rows.length; i++) {
+            var row = rows[i];
+            var dateCell = row.cells[3];
+            var rowDate = new Date(dateCell.textContent);
 
-                                if (rowDate >= startDate) {
-                                    row.style.display = "";
-                                } else {
-                                    row.style.display = "none";
-                                }
-                            }
-                            var tdate = new Date(fromDate)
-                            var options = { year: 'numeric', month: 'long', day: 'numeric' };
-                            document.getElementById("d1").innerHTML = tdate.toLocaleDateString(undefined, options);
-                        })
-                        var toDate;
-                        $('#in2').on('change', function () {
-                            toDate = $(this).val();
-                            $('#in1').prop('max', function () {
-                                return toDate
-                            })
-                            var startDate = new Date(document.getElementById("in1").value);
-                            var endDate = new Date(document.getElementById("in2").value);
-                            var rows = table.getElementsByTagName("tr");
-                            for (var i = 2; i < rows.length; i++) {
-                                var row = rows[i];
-                                var dateCell = row.cells[3];
-                                var rowDate = new Date(dateCell.textContent);
+            if (rowDate >= startDate) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        }
+        var tdate = new Date(fromDate)
+        var options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById("d1").innerHTML = tdate.toLocaleDateString(undefined, options);
+    })
+    var toDate;
+    $('#in2').on('change', function () {
+        toDate = $(this).val();
+        $('#in1').prop('max', function () {
+            return toDate
+        })
+        var startDate = new Date(document.getElementById("in1").value);
+        var endDate = new Date(document.getElementById("in2").value);
+        var rows = table.getElementsByTagName("tr");
+        for (var i = 2; i < rows.length; i++) {
+            var row = rows[i];
+            var dateCell = row.cells[3];
+            var rowDate = new Date(dateCell.textContent);
 
-                                if (rowDate <= endDate && rowDate >= startDate) {
-                                    row.style.display = "";
-                                    console.log("display");
-                                } else {
-                                    row.style.display = "none";
+            if (rowDate <= endDate && rowDate >= startDate) {
+                row.style.display = "";
+                console.log("display");
+            } else {
+                row.style.display = "none";
 
-                                }
-                            }
-                            var tdate = new Date(toDate)
-                            var options = { year: 'numeric', month: 'long', day: 'numeric' };
-                            document.getElementById("d2").innerHTML = "  To  " + tdate.toLocaleDateString(undefined, options);
-                        })
+            }
+        }
+        var tdate = new Date(toDate)
+        var options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById("d2").innerHTML = "  To  " + tdate.toLocaleDateString(undefined, options);
+    })
 
 
-                    </script>
+</script>
 
-                    <script>
+<script>
     function toggleDropdown() {
         var dropdownContent = document.getElementById("myDropdown");
         dropdownContent.style.display = (dropdownContent.style.display === "block") ? "none" : "block";
@@ -683,60 +690,60 @@ function exportToExcel() {
 </script>
 
 <script>
-  
-    $(document).ready(function () {
-      $('#share_with_email').on('click', function () {
-        var emailsInput = document.getElementById('emailIds');
-        var emailsString = emailsInput.value.trim();
-  
-        var emails = emailsString.split(',').map(function (email) {
-          return email.trim();
-        });
-  
-        var emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-  
-        var invalidEmails = []
-        if (emailsString == "") {
-          alert('Enter valid email addresses..')
-        }
-        else {
 
-          for (var i = 0; i < emails.length; i++) {
-            var currentEmail = emails[i];
-  
-            if (currentEmail != "" && !emailRegex.test(currentEmail)) {
-              console.log(currentEmail + ' is invalid!');
-              invalidEmails.push(currentEmail)
+    $(document).ready(function () {
+        $('#share_with_email').on('click', function () {
+            var emailsInput = document.getElementById('emailIds');
+            var emailsString = emailsInput.value.trim();
+
+            var emails = emailsString.split(',').map(function (email) {
+                return email.trim();
+            });
+
+            var emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+
+            var invalidEmails = []
+            if (emailsString == "") {
+                alert('Enter valid email addresses..')
             }
-          }
-  
-          if (invalidEmails.length > 0) {
-            alert('Invalid emails..Please check!\n' + invalidEmails)
-            // alert(invalidEmails)
-          } else {
-            $('#share_to_email_form').submit();
-          }
-        }
-      })
+            else {
+
+                for (var i = 0; i < emails.length; i++) {
+                    var currentEmail = emails[i];
+
+                    if (currentEmail != "" && !emailRegex.test(currentEmail)) {
+                        console.log(currentEmail + ' is invalid!');
+                        invalidEmails.push(currentEmail)
+                    }
+                }
+
+                if (invalidEmails.length > 0) {
+                    alert('Invalid emails..Please check!\n' + invalidEmails)
+                    // alert(invalidEmails)
+                } else {
+                    $('#share_to_email_form').submit();
+                }
+            }
+        })
     });
-  
-  
+
+
     function shareOnWhatsApp() {
-      var url = window.location.href;
-      var text = url;
-      text = encodeURIComponent(text);
-      var whatsappUrl = "whatsapp://send?text=" + text;
-      window.location.href = whatsappUrl;
+        var url = window.location.href;
+        var text = url;
+        text = encodeURIComponent(text);
+        var whatsappUrl = "whatsapp://send?text=" + text;
+        window.location.href = whatsappUrl;
     }
 
 
-    $(document).ready(function() {
-            // Add click event listener to the close button
-            $('#closeButton').click(function() {
-                // Navigate back to the previous page
-                window.history.back();
-            });
+    $(document).ready(function () {
+        // Add click event listener to the close button
+        $('#closeButton').click(function () {
+            // Navigate back to the previous page
+            window.history.back();
         });
+    });
 </script>
 
 
@@ -775,12 +782,12 @@ function exportToExcel() {
         h1Element.style.color = "black";
         h1Element.textAlign = "center";
         // h1Element.textContent = (id === 'salediv') ? 'Sale' : 'Sale Return';
-        if (id == 'salediv') {
-                h1Element.textContent = "Sale";
-            }
-            else {
-                h1Element.textContent = "Sale Return";
-            }
+        // if (id=='salediv') {
+        //     h1Element.textContent = "Sale";
+        // }       
+        // else {
+        //     h1Element.textContent = "Sale Return";
+        // }
         // Create a style element and set its content
         var styleElement = printWindow.document.createElement("style");
         styleElement.textContent = `
