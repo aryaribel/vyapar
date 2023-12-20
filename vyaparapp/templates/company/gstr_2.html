@@ -79,6 +79,9 @@
         background-color: #3B71CA;
         color: white;
     }
+
+
+    
 </style>
 
 <div class="body-wrapper">
@@ -139,7 +142,7 @@
 
                 </div>
                 <div class="option_btn d-flex align-items-center" style="margin-left: 1000px;">
-                    <button class="btn btn-sm" type="button" onclick="printSection('print_export_section')"
+                    <button class="btn btn-sm" type="button" onclick="printSection()"
                         title="PRINT"><span><img width="22px" src="{% static 'assets/printer1.png' %}"
                                 alt="PRINT"></span></button>
                     <button class="btn btn-sm" type="button" onclick="exportToExcel()" title="EXPORT"><span><img
@@ -203,7 +206,7 @@
 
                                             <div class="col-sm-12 col-lg-3">
                                                 <table id="myTable" 
-                                                    class="table table-bordered table-info table-striped tb  w-100 table-responsive"
+                                                    class="table table-bordered table-info table-striped tb w-100  table-responsive"
                                                     style="text-align: center;">
                                                   
                                                     <thead>
@@ -483,8 +486,8 @@
     //     XLSX.writeFile(wb, "gstr1.xlsx");
     // }
 
-    function printSection(sectionId) {
-        var printContents = document.getElementById(sectionId).innerHTML;
+    function printSection(pdfdwnld) {
+        var printContents = document.getElementById('pdfdwnld').innerHTML;
         var originalContents = document.body.innerHTML;
 
         document.body.innerHTML = printContents;

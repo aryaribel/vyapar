@@ -23,6 +23,7 @@
     integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
+   
 <style>
     .card-body {
         box-shadow: 2px 2px 10px 3px rgba(0, 0, 0, 0.397);
@@ -144,7 +145,7 @@
 
                 </div>
                 <div class="option_btn d-flex align-items-center" style="margin-left: 1000px;">
-                    <button class="btn btn-sm" type="button" onclick="printSection('pdfdwnld')" title="PRINT"><span><img
+                    <button class="btn btn-sm" type="button" onclick="printSection()" title="PRINT"><span><img
                                 width="22px" src="{% static 'assets/printer1.png' %}" alt="PRINT"></span></button>
                     <button class="btn btn-sm" type="button" onclick="exportToExcel()" title="EXPORT"><span><img
                                 width="22px" src="{% static 'assets/excel2.png' %}" alt="EXPORT"></span></button>
@@ -215,7 +216,7 @@
                                                 <h4 style="color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important; margin-bottom: 0;">Sale</h4>
                                                 <table id="myTable" id="tablediv"
                                                     class="table table-bordered table-info table-striped tb  table-responsive"
-                                                    id="billtable" style="text-align: center; width: 1260px;">
+                                                    id="billtable" style="text-align: center; width: 1050px;">
                                                     <!-- <table
                                                 class="table table-bordered table-secondary table-striped table-hover  mt-3"
                                                 id="tab_logic"> -->
@@ -336,8 +337,12 @@
                                                 });
                                             });
                                         </script>
+
+
+
                                     </DIV>
 
+                                   
                                 </form>
 
                             </div>
@@ -545,10 +550,8 @@
         html2pdf().set(opt).from(content).save();
     }
 
-
-
-
-
+   
+        
     function toggleDropdown() {
         var dropdownContent = document.getElementById("myDropdown");
         dropdownContent.style.display = (dropdownContent.style.display === "block") ? "none" : "block";
@@ -568,6 +571,7 @@
         XLSX.writeFile(wb, 'gstr1.xlsx');
     }
 </script>
+ 
 <script>
     var table = document.getElementById("myTable");
 
@@ -748,7 +752,7 @@
 
 
 
-<script>
+<!-- <script>
     var activatedTabId = 1;
 
     // Document ready function to set up event listeners
@@ -826,8 +830,81 @@
         // Close the new window after printing
         printWindow.close();
     }
-</script>
+</script> -->
 
+<script>
+    var activatedTabId = 1;
+
+    // Document ready function to set up event listeners
+    $(document).ready(function () {
+        // Set up event listener for tab activation
+        $('ul.nav-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (event) {
+            // Get the ID of the activated tab
+            activatedTabId = $(event.target).attr('href').substring(1);
+            console.log('Activated tab ID:', activatedTabId);
+        });
+    });
+
+    // Function to print the selected section
+    function printSection() {
+        // Get the activated tab ID when the print function is called
+        var id = activatedTabId;
+
+        // Clone the specified element
+        const pdfCard = document.getElementById('pdfdwnld').cloneNode(true);
+        pdfCard.style.color = 'black';
+        pdfCard.style.backgroundColor = '#243e54';
+
+        // Create a new window for printing
+        const printWindow = window.open('', '');
+        const pageTitle = printWindow.document.createElement('h1');
+        pageTitle.style.textAlign = "center";
+        pageTitle.style.color = "black";
+        pageTitle.textContent = 'GSTR1';
+
+        const h1Element = printWindow.document.createElement('h2');
+        h1Element.style.color = "black";
+        h1Element.textAlign = "center";
+        // h1Element.textContent = (id === 'salediv') ? 'Sale' : 'Sale Return';
+
+        // Create a style element and set its content
+        var styleElement = printWindow.document.createElement("style");
+        styleElement.textContent = `
+            body {
+                background-color: #333;
+                color : black;
+                font-family: Arial, sans-serif;
+                /* Add more styles as needed */
+            }
+            h2, h1 {
+                color: #333;
+                /* Add more styles as needed */
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-bottom: 20px;
+            }
+            th, td {
+                border: 1px solid #ddd;
+                padding: 6px;
+                text-align: center;
+            }
+        `;
+
+        // Append elements to the new window
+        printWindow.document.body.appendChild(pageTitle);
+        printWindow.document.body.appendChild(h1Element);
+        printWindow.document.body.appendChild(pdfCard);
+        printWindow.document.head.appendChild(styleElement);
+
+        // Trigger the print dialog for the new window
+        printWindow.print();
+
+        // Close the new window after printing
+        printWindow.close();
+    }
+</script>
 
 
 

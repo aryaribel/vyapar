@@ -4723,10 +4723,26 @@ def gstrr2(request):
     return render(request, 'company/gstr_2.html', {'purchasebill': purchasebill, 'company': comp, 'partydata': partydata})
 
 
+# def gstrnew1(request):
+  # if 'staff_id' in request.session:
+  #   if request.session.has_key('staff_id'):
+  #     staff_id = request.session['staff_id']
+  #   else:
+  #     return redirect('/')
+  #   staff =  staff_details.objects.get(id=staff_id)
+  #   comp =  company.objects.get(id = staff.company.id)
+  #   # comp = company.objects.get(user_id=request.user.id)
+  #   allmodules= modules_list.objects.get(company=staff.company,status='New')
+  #   context = {'company': comp,'allmodules': allmodules}
+  #   return render(request, 'company/gstr_1.html',{'company':comp})  
 def gstrnew1(request):
-    comp = company.objects.get(user_id=request.user.id)
-    return render(request, 'company/gstr_1.html',{'company':comp})  
-       
+  staff_id = request.session['staff_id']
+  staff =  staff_details.objects.get(id=staff_id)
+  comp =  company.objects.get(id = staff.company.id)
+
+  allmodules= modules_list.objects.get(company=staff.company,status='New')
+  return render(request, 'company/gstr_1.html',{'staff':staff,'company':comp,'allmodules':allmodules})
+      
 
 def sharepurchaseBillToEmail(request):
   if 'staff_id' in request.session:
