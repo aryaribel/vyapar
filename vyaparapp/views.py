@@ -4830,5 +4830,44 @@ def shareGSTR2purchaseBillToEmail(request):
     except Exception as e:
         print(e)
         messages.error(request, f'{e}')
-        return redirect(gstrr2)     
+        return redirect(gstrr2)   
+
+
+
+# def filter_view(request):
+#     # Get the filter option from the request, defaulting to 'All' if not present
+#     filter_option = request.GET.get('filter_option', 'All')
+
+#     # Query your purchase bill data based on the selected filter
+#     if filter_option == 'All':
+#         purchase_bill = PurchaseBill.objects.all()
+#     elif filter_option == 'With':
+#         purchase_bill = PurchaseBill.objects.filter(party__gst_no__isnull=False)
+#     elif filter_option == 'Without':
+#         purchase_bill = PurchaseBill.objects.filter(party__gst_no__isnull=True)
+#     else:
+#         # Handle any other cases or set a default behavior
+#         purchase_bill = PurchaseBill.objects.all()
+
+#     # Get the date filter from the request, defaulting to None if not present
+#     start_date = request.GET.get('FromDate', None)
+#     end_date = request.GET.get('ToDate', None)
+
+#     # Apply date filters if they are provided
+#     if start_date and end_date:
+#         purchase_bill = purchase_bill.filter(billdate__range=[start_date, end_date])
+#     elif start_date:
+#         purchase_bill = purchase_bill.filter(billdate__gte=start_date)
+#     elif end_date:
+#         purchase_bill = purchase_bill.filter(billdate__lte=end_date)
+
+#     context = {
+#         'purchasebill': purchase_bill,
+#         'filter_option': filter_option,
+#         'start_date': start_date,
+#         'end_date': end_date,
+#     }
+#     return render(request, 'your_template.html', context)
+
+
 ############################ ARYA ER #################################################################################################

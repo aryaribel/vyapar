@@ -13,6 +13,9 @@
     integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni"
     crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.5.0-beta4/html2canvas.min.js"></script>
+
 <!-- Include html2pdf library -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
@@ -121,22 +124,25 @@
 
                     <div class="col-md-3">
 
-                        <div class="form-group px-2">
+                         <div class="form-group px-2">
                             <label style="text-align:left ">From</label><br>
                             <input name="FromDate" class="inputdate form-control" id="in1" type="date">
-                        </div>
+                        </div> 
+                       
                     </div>
                     <div class="col-md-3">
                         <div class="form-group px-2">
                             <label style="text-align:left ">To</label><br>
                             <input name="ToDate" class="inputdate form-control" id="in2" type="date">
                         </div>
-
+                        
 
                     </div>
                     <br><br><br>
-                    <button style="margin-left: 550px;" title="close" class="btn btn-close"
-                    id="closeButton"></button>
+                    <!-- <button style="margin-left: 550px;" title="close" class="btn btn-close"
+                    id="closeButton"></button> -->
+                    <a href="{% url 'companyreport' %}" class="close-button"><button style="margin-left: 550px;" title="close" class="btn btn-close"
+                        id="closeButton"></button></a>
 
 
 
@@ -177,6 +183,11 @@
                         <li><a class="dropdown-item" onclick="filterTable('With')">With GSTIN</a></li>
                         <li><a class="dropdown-item" onclick="filterTable('Without')">Without GSTIN</a></li>
                     </ul>
+                    <!-- <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="?filter_option=All">All</a></li>
+                        <li><a class="dropdown-item" href="?filter_option=With">With GSTIN</a></li>
+                        <li><a class="dropdown-item" href="?filter_option=Without">Without GSTIN</a></li>
+                    </ul> -->
                 </div>
 
 
@@ -496,6 +507,20 @@
 
         document.body.innerHTML = originalContents;
     }
+    // function exportToPDF() {
+    //     console.log('print')
+    //     var content = document.getElementById('pdfdwnld');
+
+    //     var opt = {
+    //         margin: 0.1,
+    //         filename: 'GSTR1.pdf',
+    //         image: { type: 'jpeg', quality: 0.98 },
+    //         html2canvas: { scale: 2 },
+    //         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    //     };
+
+    //     html2pdf().set(opt).from(content).save();
+    // }
     function exportToPDF() {
         var content = document.getElementById('pdfdwnld');
 
@@ -503,11 +528,18 @@
             margin: 0.1,
             filename: 'GSTR1.pdf',
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            html2canvas: { scale: 10 , scrollX:0 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
         };
 
         html2pdf().set(opt).from(content).save();
+        // html2pdf(content,opt).save();
+
+    //     html2canvas(content).then(canvas => {
+    //     var pdf = new jsPDF('p', 'mm', 'a4');
+    //     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297); // Adjust dimensions as needed
+    //     pdf.save('output.pdf');
+    // });
     }
 
 
@@ -624,7 +656,9 @@
                     if (rowDate <= endDate && rowDate >= startDate) {
                         row.style.display = 'table-row';
                     } else {
-                        row.style.display = 'none';
+                        row.style.display = 'table-row';
+
+                        // row.style.display = 'none';
                     }
                 }
             }
@@ -640,9 +674,12 @@
                         if (rowDate <= endDate && rowDate >= startDate) {
                             row.style.display = 'table-row';
                         } else {
-                            row.style.display = 'none';
+                            row.style.display = 'table-row';
+
+                            // row.style.display = 'none';
                         }
                     } else {
+
                         row.style.display = 'none';
                     }
                 }
@@ -697,14 +734,13 @@
       window.location.href = whatsappUrl;
     }
 
-    $(document).ready(function() {
-            // Add click event listener to the close button
-            $('#closeButton').click(function() {
-                // Navigate back to the previous page
-                window.history.back();
-            });
-        });
+    // $(document).ready(function() {
+    //         // Add click event listener to the close button
+    //         $('#closeButton').click(function() {
+    //             // Navigate back to the previous page
+    //             window.history.back();
+    //         });
+    //     });
 </script>
-
 
 {% endblock %}
