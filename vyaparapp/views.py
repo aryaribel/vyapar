@@ -4692,18 +4692,7 @@ def view_party(request,id):
 
 
 ############################ ARYA ER #################################################################################################
-# def gstrr2(request):
-#     if 'staff_id' in request.session:
-#      if request.session.has_key('staff_id'):
-#       staff_id = request.session['staff_id']
-#     else:
-#       return redirect('/')
-#     staff =  staff_details.objects.get(id=staff_id)
-#     comp =  company.objects.get(id = staff.company.id)
-#     # comp = company.objects.get(user_id=request.user.id)
-#     purchasebill =  PurchaseBill.objects.all()
-#     partydata = party.objects.all()   
-#     return render(request, 'company/gstr_2.html' , {'purchasebill':purchasebill,'company':comp,'partydata':partydata})  
+ 
 
 def gstrr2(request):
     if 'staff_id' in request.session:
@@ -4719,22 +4708,12 @@ def gstrr2(request):
 
     # Filter party instances related to the specific company
     partydata = party.objects.filter(company=comp)
+    allmodules= modules_list.objects.get(company=staff.company,status='New')
 
-    return render(request, 'company/gstr_2.html', {'purchasebill': purchasebill, 'company': comp, 'partydata': partydata})
+    return render(request, 'company/gstr_2.html', {'staff':staff,'company': comp,'purchasebill': purchasebill, 'partydata': partydata,'allmodules':allmodules})
 
 
-# def gstrnew1(request):
-  # if 'staff_id' in request.session:
-  #   if request.session.has_key('staff_id'):
-  #     staff_id = request.session['staff_id']
-  #   else:
-  #     return redirect('/')
-  #   staff =  staff_details.objects.get(id=staff_id)
-  #   comp =  company.objects.get(id = staff.company.id)
-  #   # comp = company.objects.get(user_id=request.user.id)
-  #   allmodules= modules_list.objects.get(company=staff.company,status='New')
-  #   context = {'company': comp,'allmodules': allmodules}
-  #   return render(request, 'company/gstr_1.html',{'company':comp})  
+
 def gstrnew1(request):
   staff_id = request.session['staff_id']
   staff =  staff_details.objects.get(id=staff_id)
@@ -4834,40 +4813,8 @@ def shareGSTR2purchaseBillToEmail(request):
 
 
 
-# def filter_view(request):
-#     # Get the filter option from the request, defaulting to 'All' if not present
-#     filter_option = request.GET.get('filter_option', 'All')
 
-#     # Query your purchase bill data based on the selected filter
-#     if filter_option == 'All':
-#         purchase_bill = PurchaseBill.objects.all()
-#     elif filter_option == 'With':
-#         purchase_bill = PurchaseBill.objects.filter(party__gst_no__isnull=False)
-#     elif filter_option == 'Without':
-#         purchase_bill = PurchaseBill.objects.filter(party__gst_no__isnull=True)
-#     else:
-#         # Handle any other cases or set a default behavior
-#         purchase_bill = PurchaseBill.objects.all()
 
-#     # Get the date filter from the request, defaulting to None if not present
-#     start_date = request.GET.get('FromDate', None)
-#     end_date = request.GET.get('ToDate', None)
-
-#     # Apply date filters if they are provided
-#     if start_date and end_date:
-#         purchase_bill = purchase_bill.filter(billdate__range=[start_date, end_date])
-#     elif start_date:
-#         purchase_bill = purchase_bill.filter(billdate__gte=start_date)
-#     elif end_date:
-#         purchase_bill = purchase_bill.filter(billdate__lte=end_date)
-
-#     context = {
-#         'purchasebill': purchase_bill,
-#         'filter_option': filter_option,
-#         'start_date': start_date,
-#         'end_date': end_date,
-#     }
-#     return render(request, 'your_template.html', context)
 
 
 ############################ ARYA ER #################################################################################################

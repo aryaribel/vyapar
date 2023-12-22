@@ -92,14 +92,14 @@
     <br><br><br>
     <div class="row p-0 m-0">
         <div class="row">
-            <h1 class="h1 text-center pt-3 pb-2"
+            <!-- <h1 class="h1 text-center pt-3 pb-2"
                 style="text-transform:uppercase; font-family: 'Times New Roman', Times, serif;padding-left: 5px;">
                 <b>{{company.company_name}}</b>
             </h1>
             <center>
                 <H4 style="font-weight: bolder;">GSTR 2 REPORT</H4>
 
-            </center>
+            </center> -->
         </div>
         <div class="col-sm-12  p-0 m-0">
             <div class=" bg-light bg-light pb-0 mb-0 p-2" style="height:100%; width: 1200px;">
@@ -200,7 +200,14 @@
 
 
                             <DIV id="pdfdwnld">
-
+                                <h1 class="h1 text-center pt-3 pb-2"
+                                style="text-transform:uppercase; font-family: 'Times New Roman', Times, serif;padding-left: 5px;">
+                                <b>{{company.company_name}}</b>
+                            </h1>
+                            <center>
+                                <H4 style="font-weight: bolder;">GSTR 2 REPORT</H4>
+                
+                            </center>
 
                                 <div id="print_export_section">
                                     <br>
@@ -521,18 +528,20 @@
 
     //     html2pdf().set(opt).from(content).save();
     // }
-    function exportToPDF() {
-        var content = document.getElementById('pdfdwnld');
+    // function exportToPDF() {
+    //     var content = document.getElementById('pdfdwnld');
 
-        var opt = {
-            margin: 0.1,
-            filename: 'GSTR1.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 10 , scrollX:0 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
+    //     var opt = {
+    //         margin: 0.1,
+    //         filename: 'GSTR2.pdf',
+    //         image: { type: 'jpeg', quality: 0.98 },
+    //         html2canvas: { scale: 1 , scrollX:0 },
+    //         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    //     };
 
-        html2pdf().set(opt).from(content).save();
+    //     html2pdf().set(opt).from(content).save();
+    //         }
+
         // html2pdf(content,opt).save();
 
     //     html2canvas(content).then(canvas => {
@@ -540,7 +549,20 @@
     //     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297); // Adjust dimensions as needed
     //     pdf.save('output.pdf');
     // });
-    }
+
+            function exportToPDF() {
+                var content = document.getElementById('pdfdwnld');
+
+                var opt = {
+                    margin: 0.1,
+                    filename: 'GSTR2.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+                };
+
+                html2pdf().set(opt).from(content).save();
+            }
 
 
 

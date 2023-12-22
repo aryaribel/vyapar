@@ -229,11 +229,14 @@
                                     </ul>
 
                                     <div id="pdfdwnld">
-
+                                        <h4
+                                        style="color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important; margin-bottom: 0;">
+                                        GSTR 1 report</h4>
 
                                         <div class="row m-0 p-0 pt-3 " id="salediv" data-title="Sale">
 
                                             <div class="col-sm-12 col-lg-3">
+                                                
                                                 <h4
                                                     style="color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important; margin-bottom: 0;">
                                                     Sale</h4>
@@ -561,6 +564,20 @@
 
 
 
+    // function exportToPDF() {
+    //     var content = document.getElementById('pdfdwnld');
+
+    //     var opt = {
+    //         margin: 0.1,
+    //         filename: 'GSTR1.pdf',
+    //         image: { type: 'jpeg', quality: 0.98 },
+    //         html2canvas: { scale: 10 , scrollX:0 },
+    //         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    //     };
+
+    //     html2pdf().set(opt).from(content).save();
+    //     // html2pdf(content,opt).save();
+    // }
     function exportToPDF() {
         var content = document.getElementById('pdfdwnld');
 
@@ -568,14 +585,12 @@
             margin: 0.1,
             filename: 'GSTR1.pdf',
             image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 10 , scrollX:0 },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
         };
 
         html2pdf().set(opt).from(content).save();
-        // html2pdf(content,opt).save();
     }
-
 
 
     function toggleDropdown() {
