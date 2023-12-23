@@ -183,11 +183,7 @@
                         <li><a class="dropdown-item" onclick="filterTable('With')">With GSTIN</a></li>
                         <li><a class="dropdown-item" onclick="filterTable('Without')">Without GSTIN</a></li>
                     </ul>
-                    <!-- <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="?filter_option=All">All</a></li>
-                        <li><a class="dropdown-item" href="?filter_option=With">With GSTIN</a></li>
-                        <li><a class="dropdown-item" href="?filter_option=Without">Without GSTIN</a></li>
-                    </ul> -->
+                   
                 </div>
 
 
@@ -678,9 +674,9 @@
                     if (rowDate <= endDate && rowDate >= startDate) {
                         row.style.display = 'table-row';
                     } else {
-                        row.style.display = 'table-row';
+                        // row.style.display = 'table-row';
 
-                        // row.style.display = 'none';
+                        row.style.display = 'none';
                     }
                 }
             }
@@ -696,9 +692,9 @@
                         if (rowDate <= endDate && rowDate >= startDate) {
                             row.style.display = 'table-row';
                         } else {
-                            row.style.display = 'table-row';
+                            // row.style.display = 'table-row';
 
-                            // row.style.display = 'none';
+                            row.style.display = 'none';
                         }
                     } else {
 
@@ -708,6 +704,83 @@
             }
         }
 </script>
+<!-- <script>
+    function filterTable() {
+        var fromDate = document.getElementById("in1").value;
+        var selectedDate = new Date(fromDate);
+        selectedDate.setDate(selectedDate.getDate() - 0);
+        var toDate = document.getElementById("in2").value;
+        var table = document.getElementById("myTable");
+        var rows = table.getElementsByTagName("tr");
+        // var emptyMessage = document.getElementById('emptyMessage');
+        // var isEmpty = true;
+        for (var i = 1; i < rows.length; i++) {
+            var currentDate = rows[i].getElementsByTagName("td")[3].innerText;
+            var date = new Date(currentDate.replace(/(\d{2})-(\d{2})-(\d{2})/, "$2/$1/$3"));
+            if ((fromDate && date >= selectedDate) || !fromDate) {
+                if ((toDate && date <= new Date(toDate)) || !toDate) {
+                    rows[i].style.display = "table-row";
+                    isEmpty = false;
+                } else {
+                    rows[i].style.display = "none";
+                }
+            } else {
+                rows[i].style.display = "none";
+            }
+        }
+        // emptyMessage.style.display = isEmpty ? 'block' : 'none';
+    }
+</script> -->
+<!-- <script>
+    function filterTable() {
+        const table = document.getElementById('myTable');
+        const rows = table.getElementsByTagName('tr');
+        var startDate = new Date(document.getElementById("in1").value);
+        var endDate = new Date(document.getElementById("in2").value);
+
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            var dateCell = row.cells[3];
+            var rowDate = new Date(dateCell.textContent);
+
+            const cells = row.getElementsByTagName('td');
+            const gstinCell = cells[0];
+
+            if (startDate && endDate) {
+                // Filter with date range
+                if (rowDate >= startDate && rowDate <= endDate) {
+                    if (gstinCell.textContent !== '' && document.getElementById("filterSelect").value === 'With') {
+                        row.style.display = 'table-row';
+                    } else if (gstinCell.textContent === '' && document.getElementById("filterSelect").value === 'Without') {
+                        row.style.display = 'table-row';
+                    } else if (document.getElementById("filterSelect").value === 'All') {
+                        row.style.display = 'table-row';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                } else {
+                    row.style.display = 'none';
+                }
+            } else {
+                // Filter without date range
+                if (
+                    (document.getElementById("filterSelect").value === 'With' && gstinCell.textContent !== '') ||
+                    (document.getElementById("filterSelect").value === 'Without' && gstinCell.textContent === '') ||
+                    document.getElementById("filterSelect").value === 'All'
+                ) {
+                    row.style.display = 'table-row';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        }
+    }
+
+    // Initial filter when the page loads
+    filterTable();
+</script> -->
+
+
 
 <script>
   

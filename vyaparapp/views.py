@@ -4734,7 +4734,8 @@ def sharepurchaseBillToEmail(request):
     try:
       if request.method == 'POST':
         emails_string = request.POST['email_ids']
-
+        sale_salereturns = request.POST['sale_salereturn']
+        print(sale_salereturns)
         # Split the string by commas and remove any leading or trailing whitespace
         emails_list = [email.strip() for email in emails_string.split(',')]
         email_message = request.POST['email_message']
@@ -4745,12 +4746,19 @@ def sharepurchaseBillToEmail(request):
         partydata = party.objects.all()
         allmodules= modules_list.objects.get(company=staff.company,status='New')
         context = {'purchasebill': purchasebill,'partydata': partydata,'allmodules': allmodules, 'company': comp}
+        if sale_salereturns =='sale':
+          template_path = 'company/gstr1_pdf.html'
+          template = get_template(template_path)
+
+          html  = template.render(context)
+        else :
+          template_path = 'company/gstr1salereturn_pdf.html'
+          template = get_template(template_path)
+
+          html  = template.render(context)
 
 
-        template_path = 'company/gstr1_pdf.html'
-        template = get_template(template_path)
-
-        html  = template.render(context)
+        
         result = BytesIO()
         pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
         pdf = result.getvalue()

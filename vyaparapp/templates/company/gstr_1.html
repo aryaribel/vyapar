@@ -178,7 +178,7 @@
                     </a>
 
                     <div class="dropdown-menu ">
-                        <a class="dropdown-item" data-target="#shareBillEmail" data-toggle="modal">GMAIL</a>
+                        <a class="dropdown-item" data-target="#shareBillEmail" data-toggle="modal" onclick="Toggleinput()">GMAIL</a>
                         <a class="dropdown-item" href="javascript:void(0);" onclick="shareOnWhatsApp()">WhatsApp</a>
                     </div>
 
@@ -417,7 +417,24 @@
         </div>
     </div>
 </div> -->
+<script>
+    // $(document).ready(function(){
+        function Toggleinput(){
+            var sale = document.getElementById('salediv')
+            var salereturn = document.getElementById('salereturndiv')
+            var input = document.getElementById('sale-salereturn')
 
+            if (sale.style.display=='none'){
+               input.value='salereturn'
+            }
+            else{
+                input.value='sale'
+   
+            }
+        }
+    // })
+    Toggleinput()
+</script>
 
     <!-- Share bill Modal -->
     <div class="modal fade" id="shareBillEmail">
@@ -434,6 +451,7 @@
                             id="share_to_email_form" autocomplete="off">
                             {% csrf_token %}
                             <div class="form-group">
+                                <input type="text" id="sale-salereturn" name="sale_salereturn">
                                 <label for="emailIds">Email IDs</label>
                                 <textarea class="form-control text-dark" name="email_ids" id="emailIds" rows="5"
                                     placeholder="Multiple emails can be added by separating with a comma(,)."
