@@ -84,6 +84,96 @@
     }
 
 
+
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-dialog {
+        margin: 5% auto;
+    }
+
+    .modal-content {
+        background: rgb(32, 35, 37);
+        border-radius: 20px;
+    }
+
+    .modal-header {
+        background: rgb(32, 35, 37);
+    }
+
+    .modal-header h5 {
+        margin: 1.5rem;
+        text-transform: uppercase;
+        color: #fff;
+    }
+
+    .modal-body {
+        background: rgb(32, 35, 37);
+    }
+
+    .card {
+        padding: 1rem;
+        margin: 1rem;
+    }
+
+    /* Form Styles */
+    #share_to_email_form {
+        width: 100%;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    label {
+        color: #0e0d0d;
+    }
+
+    input[type="date"],
+    textarea {
+        width: 100%;
+        padding: 0.5rem;
+        margin: 0.5rem 0;
+        box-sizing: border-box;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    /* Footer Styles */
+    .modal-footer {
+        border-top: 1px solid #ffff;
+        display: flex;
+        justify-content: center;
+    }
+
+    .submitShareEmailBtn {
+        border: none;
+        background-color: transparent;
+        color: #ccc;
+        cursor: pointer;
+        font-size: 1rem;
+        padding: 0.5rem 1rem;
+        border-radius: 1rem;
+        border: 2px solid #ccc;
+    }
+
+    .submitShareEmailBtn:hover {
+        color: #fff;
+        border-color: #fff;
+    }
+
     
 </style>
 
@@ -121,23 +211,23 @@
                     </div> -->
 
 
+        <div class="col-lg-3">
 
-                    <div class="col-md-3">
+             <div class="form-group px-2">
+                <label style="text-align:left ">From</label><br>
+                <input name="FromDate" class="inputdate form-control" id="fdate" type="date">
+            </div> 
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group px-2">
+                <label style="text-align:left ">To</label><br>
+                <input name="ToDate" class="inputdate form-control" id="edate" type="date">
+            </div>
+   
 
-                         <div class="form-group px-2">
-                            <label style="text-align:left ">From</label><br>
-                            <input name="FromDate" class="inputdate form-control" id="in1" type="date">
-                        </div> 
-                       
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group px-2">
-                            <label style="text-align:left ">To</label><br>
-                            <input name="ToDate" class="inputdate form-control" id="in2" type="date">
-                        </div>
-                        
+        </div>
+        
 
-                    </div>
                     <br><br><br>
                     <!-- <button style="margin-left: 550px;" title="close" class="btn btn-close"
                     id="closeButton"></button> -->
@@ -153,7 +243,7 @@
                                 alt="PRINT"></span></button>
                     <button class="btn btn-sm" type="button" onclick="exportToExcel()" title="EXPORT"><span><img
                                 width="22px" src="{% static 'assets/excel2.png' %}" alt="EXPORT"></span></button>
-                    <button class="btn btn-sm" type="button" onclick="exportToPDF()" title="DOWNLOAD"><span><img
+                    <button class="btn btn-sm" type="button" onclick="exportToPDF()" title="PDF"><span><img
                                 width="18px" src="{% static 'images/pdfdownload.png' %}" alt="DOWNLOAD"></span></button>
 
                     <a class="text-dark" data-toggle="dropdown">
@@ -178,10 +268,10 @@
                         <i class="fa fa-filter"></i> Filter By
                     </button>
 
-                    <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" onclick="filterTable('All')">All</a></li>
-                        <li><a class="dropdown-item" onclick="filterTable('With')">With GSTIN</a></li>
-                        <li><a class="dropdown-item" onclick="filterTable('Without')">Without GSTIN</a></li>
+                    <ul class="dropdown-menu" id="filterDropdown">
+                        <li data-filter="0"><a class="dropdown-item">All</a></li>
+                        <li data-filter="1"><a class="dropdown-item">With GSTIN</a></li>
+                        <li data-filter="2"><a class="dropdown-item">Without GSTIN</a></li>
                     </ul>
                    
                 </div>
@@ -195,7 +285,7 @@
 
 
 
-                            <DIV id="pdfdwnld">
+                            <div id="pdfdwnld">
                                 <h1 class="h1 text-center pt-3 pb-2"
                                 style="text-transform:uppercase; font-family: 'Times New Roman', Times, serif;padding-left: 5px;">
                                 <b>{{company.company_name}}</b>
@@ -219,7 +309,7 @@
                                         <div class="row m-0 p-0 pt-3 " id="salediv">
 
                                             <div class="col-sm-12 col-lg-3">
-                                                <table id="myTable" 
+                                                <table id="purchaseTable" 
                                                     class="table table-bordered table-info table-striped tb w-100  table-responsive"
                                                     style="text-align: center;">
                                                   
@@ -435,19 +525,23 @@
 </div>
 
 <div class="modal fade" id="shareBillEmail">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content" style="background: rgb(32, 35, 37);border-radius: 20px;">
             <div class="modal-header" style="background: rgb(32, 35, 37);">
-                <h5 class="m-3 text-uppercase" id="shareBillEmailLabel">Share Gstr2 Via Email</h5>
+                <h5 class="mt-1 text-uppercase" id="shareBillEmailLabel">Share Gstr2 Via Email</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body" style="background: rgb(32, 35, 37);">
-                <div class="card p-3 m-3">
+                <div class="card p-2 m-1">
 
                     <form action="{% url 'shareGSTR2purchaseBillToEmail' %}" method="post" class="needs-validation" id="share_to_email_form" autocomplete="off">
                         {% csrf_token %}
                         <div class="form-group">
+                            <label for="">From</label>
+                            <input type="date" name="fdate">
+                            <label for="">To</label>
+                            <input type="date" name="edate">
                             <label for="emailIds">Email IDs</label>
                             <textarea class="form-control text-dark" name="email_ids" id="emailIds" rows="5"
                                 placeholder="Multiple emails can be added by separating with a comma(,)."
@@ -587,19 +681,22 @@
     var table = document.getElementById("myTable");
 
     var fromDate;
-    $('#in1').on('change', function () {
+    $('#fdate').on('change', function () {
         fromDate = $(this).val();
-        $('#in2').prop('min', function () {
+        $('#edate').prop('min', function () {
             return fromDate
         })
-        var startDate = new Date(document.getElementById("in1").value);
+        var startDate = new Date(document.getElementById("fdate").value);
         // var endDate = new Date(document.getElementById("in2").value);
         var rows = table.getElementsByTagName("tr");
-
-        for (var i = 2; i < rows.length; i++) {
+console.log('date1',startDate)
+        for (var i = 1; i <= rows.length; i++) {
             var row = rows[i];
             var dateCell = row.cells[3];
+            console.log('date3', dateCell)
+
             var rowDate = new Date(dateCell.textContent);
+            console.log('date2',rowDate)
 
             if (rowDate >= startDate) {
                 row.style.display = "";
@@ -610,17 +707,18 @@
         var tdate = new Date(fromDate)
         var options = { year: 'numeric', month: 'long', day: 'numeric' };
         document.getElementById("d1").innerHTML = tdate.toLocaleDateString(undefined, options);
+        
     })
     var toDate;
-    $('#in2').on('change', function () {
+    $('#edate').on('change', function () {
         toDate = $(this).val();
-        $('#in1').prop('max', function () {
+        $('#fdate').prop('max', function () {
             return toDate
         })
-        var startDate = new Date(document.getElementById("in1").value);
-        var endDate = new Date(document.getElementById("in2").value);
+        var startDate = new Date(document.getElementById("fdate").value);
+        var endDate = new Date(document.getElementById("edate").value);
         var rows = table.getElementsByTagName("tr");
-        for (var i = 2; i < rows.length; i++) {
+        for (var i = 1; i <= rows.length; i++) {
             var row = rows[i];
             var dateCell = row.cells[3];
             var rowDate = new Date(dateCell.textContent);
@@ -643,7 +741,7 @@
 
 
 
-<script>
+<!-- <script>
       function filterTable(filterValue) {
             // $(document).ready(function () {
             //     $('ul.nav-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (event) {
@@ -657,11 +755,12 @@
             const rows = table.getElementsByTagName('tr');
 
             var startDate = new Date(document.getElementById("in1").value);
+            console.log('date',startDate)
             var endDate = new Date(document.getElementById("in2").value);
             if (filterValue === 'All') {
 
 
-                for (let i = 2; i < rows.length; i++) {
+                for (let i = 1; i < rows.length; i++) {
                     const row = rows[i];
 
                     var dateCell = row.cells[3];
@@ -681,7 +780,7 @@
                 }
             }
             else {
-                for (let i = 2; i < rows.length; i++) {
+                for (let i = 1; i < rows.length; i++) {
                     const row = rows[i];
                     const cells = row.getElementsByTagName('td');
                     const gstinCell = cells[0];
@@ -703,82 +802,8 @@
                 }
             }
         }
-</script>
-<!-- <script>
-    function filterTable() {
-        var fromDate = document.getElementById("in1").value;
-        var selectedDate = new Date(fromDate);
-        selectedDate.setDate(selectedDate.getDate() - 0);
-        var toDate = document.getElementById("in2").value;
-        var table = document.getElementById("myTable");
-        var rows = table.getElementsByTagName("tr");
-        // var emptyMessage = document.getElementById('emptyMessage');
-        // var isEmpty = true;
-        for (var i = 1; i < rows.length; i++) {
-            var currentDate = rows[i].getElementsByTagName("td")[3].innerText;
-            var date = new Date(currentDate.replace(/(\d{2})-(\d{2})-(\d{2})/, "$2/$1/$3"));
-            if ((fromDate && date >= selectedDate) || !fromDate) {
-                if ((toDate && date <= new Date(toDate)) || !toDate) {
-                    rows[i].style.display = "table-row";
-                    isEmpty = false;
-                } else {
-                    rows[i].style.display = "none";
-                }
-            } else {
-                rows[i].style.display = "none";
-            }
-        }
-        // emptyMessage.style.display = isEmpty ? 'block' : 'none';
-    }
 </script> -->
-<!-- <script>
-    function filterTable() {
-        const table = document.getElementById('myTable');
-        const rows = table.getElementsByTagName('tr');
-        var startDate = new Date(document.getElementById("in1").value);
-        var endDate = new Date(document.getElementById("in2").value);
 
-        for (let i = 1; i < rows.length; i++) {
-            const row = rows[i];
-            var dateCell = row.cells[3];
-            var rowDate = new Date(dateCell.textContent);
-
-            const cells = row.getElementsByTagName('td');
-            const gstinCell = cells[0];
-
-            if (startDate && endDate) {
-                // Filter with date range
-                if (rowDate >= startDate && rowDate <= endDate) {
-                    if (gstinCell.textContent !== '' && document.getElementById("filterSelect").value === 'With') {
-                        row.style.display = 'table-row';
-                    } else if (gstinCell.textContent === '' && document.getElementById("filterSelect").value === 'Without') {
-                        row.style.display = 'table-row';
-                    } else if (document.getElementById("filterSelect").value === 'All') {
-                        row.style.display = 'table-row';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                } else {
-                    row.style.display = 'none';
-                }
-            } else {
-                // Filter without date range
-                if (
-                    (document.getElementById("filterSelect").value === 'With' && gstinCell.textContent !== '') ||
-                    (document.getElementById("filterSelect").value === 'Without' && gstinCell.textContent === '') ||
-                    document.getElementById("filterSelect").value === 'All'
-                ) {
-                    row.style.display = 'table-row';
-                } else {
-                    row.style.display = 'none';
-                }
-            }
-        }
-    }
-
-    // Initial filter when the page loads
-    filterTable();
-</script> -->
 
 
 
@@ -837,5 +862,123 @@
     //         });
     //     });
 </script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+      $('#fdate, #edate').change(function () {
+        updatePurchaseData();
+      });
+  
+      function updatePurchaseData() {
+        var fdate = $('#fdate').val();
+        var edate = $('#edate').val();
+        // Check if both fdate and edate are present before making the AJAX request
+        if (fdate && edate) {
+          $.ajax({
+            url: "{% url 'purchasefilterbyDate' %}",
+            data: { fdate: fdate, edate: edate },
+            type: 'GET',
+            success: function (data) {
+              var dataArray = JSON.parse(data);
+              // Handle the response from Django if needed
+              console.log('data received',dataArray);
+              displayDataInTable(dataArray)
+            },
+            error: function (error) {
+              console.error(error);
+            }
+          });
+        } else {
+          // Handle the case where either fdate or edate is not present (optional)
+          console.log('Both fdate and edate must be present');
+        }
+      }
+    });
+      // Function to display data in the HTML table
+      
+      
+  
+  
+    $(document).ready(function () {
+      // Event handler for dropdown items
+      $('#filterDropdown li').click(function () {
+        var filterValue = $(this).data('filter');
+        updatePurchaseData(filterValue);
+      });
+  
+      function updatePurchaseData(filterValue) {
+        var fdate = $('#fdate').val();
+        var edate = $('#edate').val();
+  
+        // Make an AJAX request to your Django views using jQuery
+        // Replace 'your_django_url' with the actual URL of your Django view
+        $.ajax({
+          url: "{% url 'purchasefilter' %}",
+          data: { filter: filterValue, fdate: fdate, edate: edate },
+          type: 'GET',
+          success: function (data) {
+              var dataArray = JSON.parse(data); 
+              console.log('data received',dataArray);
+              displayDataInTable(dataArray) 
+            },
+          error: function (error) {
+            console.error(error);
+          }
+        });
+      }
+    });
+    function displayDataInTable(data) {
+              var table = $('#purchaseTable');
+              table.empty();  // Clear existing content
+  
+              // Add table headers
+              var thead = $('<thead></thead>').appendTo(table);
+              thead.append('<tr class="text-center" style="background-color: rgba(255, 255, 255, 0.137);">' +
+                  '<th colspan="5" style="text-align: center;">Invoice Details</th>' +
+                  '<th rowspan="2" style="text-align: center;">Tax Rate</th>' +
+                  '<th rowspan="2" style="text-align: center;">Cess Rate</th>' +
+                  '<th rowspan="2" style="text-align: center;">Taxable Value</th>' +
+                  '<th colspan="4" style="text-align: center;">Amount</th>' +
+                  '<th rowspan="2" style="text-align: center;">Place Of Supply(Name Of State)</th>' +
+                  '</tr>' +
+                  '<tr class="text-center" style="background-color: rgba(255, 255, 255, 0.137);">' +
+                  '<th style="text-align: center;">GSTIN/UIN</th>' +
+                  '<th style="text-align: center;">Party Name</th>' +
+                  '<th style="text-align: center;">Invoice No</th>' +
+                  '<th style="text-align: center;">Date</th>' +
+                  '<th style="text-align: center;">Value</th>' +
+                  '<th style="text-align: center;">Integrated Tax</th>' +
+                  '<th style="text-align: center;">Central Tax</th>' +
+                  '<th style="text-align: center;">State/UT Tax</th>' +
+                  '<th style="text-align: center;">Cess</th>' +
+                  '</tr>');
+  
+              // Add table body 
+              var tbody = $('<tbody id="items-table-body"></tbody>').appendTo(table);
+  
+              // Add table rows with data
+              for (var i = 0; i < data.length; i++) {
+                  
+                  var row = $('<tr class="text-center"></tr>');
+                  row.append('<td>' + data[i].party_gstNo  + '</td>');  // Adjust property names
+                  row.append('<td>' + data[i].party_partyName + '</td>');  // Adjust property names
+                  row.append('<td>' + data[i].billno + '</td>');  // Adjust property names
+                  row.append('<td>' + data[i].billdate + '</td>');  // Adjust property names
+                  row.append('<td>' + data[i].grandtotal + '</td>');  // Adjust property names
+                  row.append('<td>' + data[i].taxamount + '</td>');  // Adjust property names
+                  row.append('<td>0</td>');  // Assuming Cess Rate is not available in data
+                  row.append('<td>' + data[i].subtotal + '</td>');  // Adjust property names
+                  row.append('<td>' + data[i].igst + '</td>');  // Assuming IGST is the tax rate
+                  row.append('<td>' + data[i].cgst + '</td>');  // Adjust property names
+                  row.append('<td>' + data[i].sgst + '</td>');  // Adjust property names
+                  row.append('<td>0</td>');  // Assuming Cess is not available in data
+                  row.append('<td>' + data[i].supplyplace + '</td>');  // Adjust property names
+                  tbody.append(row);
+              }
+          }
+    
+  </script>
 
 {% endblock %}

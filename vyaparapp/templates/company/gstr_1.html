@@ -221,7 +221,7 @@
                                 <form action="" style="background-color: #3B71CA ;">
                                     <ul class="nav nav-tabs row mx-3">
                                         <li class="col-sm-6 text-center" id="sale">
-                                            <a href="#1" data-toggle="tab">Sale</a>
+                                            <a href="#1" data-toggle="tab" id="sale-btn">Sale</a>
                                         </li>
                                         <li class="col-sm-6 text-center" id="salereturn"><a href="#2"
                                                 data-toggle="tab">Sale Return</a>
@@ -350,9 +350,11 @@
 
                                                 $("#sale").click(function () {
                                                     $("#salediv").show();
+                                                    $("#sale-btn").removeClass('active');
+
                                                     $("#salereturndiv").hide();//: 3px solid rgb(255, 255, 255);
 
-                                                    $("#sale").css("border-bottom", "3px solid rgb(255, 255, 255)");
+                                                    $("#sale").css("border-bottom", "3px solid rgb(255, 255, 255)","background-color","rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important; margin-bottom: 0;");
                                                     $("#salereturn").css("border-bottom", "none");
                                                     // $("#t-btn").css("background-color", "rgb(243, 188, 9)").css("color", "white");
                                                 });

@@ -213,6 +213,10 @@ urlpatterns = [
     path('gstrnew1',views.gstrnew1,name='gstrnew1'),
     path('sharepurchaseBillToEmail',views.sharepurchaseBillToEmail,name='sharepurchaseBillToEmail'),
     path('shareGSTR2purchaseBillToEmail',views.shareGSTR2purchaseBillToEmail,name='shareGSTR2purchaseBillToEmail'),
+    path('purchasefilterbyDate',views.purchasefilterbyDate,name='purchasefilterbyDate'),
+    path('purchasefilter',views.purchasefilter,name='purchasefilter'),
+
+
     # ===================================== arya - end ==================================================
 
     

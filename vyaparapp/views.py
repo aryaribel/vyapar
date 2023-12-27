@@ -35,8 +35,9 @@ from openpyxl import load_workbook, Workbook
 from openpyxl.styles import Font, Protection, Alignment
 from django.template import Context, Template
 from django.conf import settings
+from django.core.serializers import serialize
 
-
+from django.db import connection
 # Create your views here.
 def home(request):
   return render(request, 'home.html')
@@ -4735,7 +4736,7 @@ def sharepurchaseBillToEmail(request):
       if request.method == 'POST':
         emails_string = request.POST['email_ids']
         sale_salereturns = request.POST['sale_salereturn']
-        print(sale_salereturns)
+        # print(sale_salereturns)
         # Split the string by commas and remove any leading or trailing whitespace
         emails_list = [email.strip() for email in emails_string.split(',')]
         email_message = request.POST['email_message']
@@ -4786,14 +4787,19 @@ def shareGSTR2purchaseBillToEmail(request):
     try:
       if request.method == 'POST':
         emails_string = request.POST['email_ids']
+        fdate = request.POST['fdate']
+        edate = request.POST['edate']
 
         # Split the string by commas and remove any leading or trailing whitespace
         emails_list = [email.strip() for email in emails_string.split(',')]
         email_message = request.POST['email_message']
         # print(emails_list)
-
+        if fdate and edate:
         # comp = company.objects.get(user_id=request.user.id)
-        purchasebill =  PurchaseBill.objects.all()
+          purchasebill =  PurchaseBill.objects.filter(company=comp,billdate__gte=fdate,billdate__lte=edate)
+        else:
+          purchasebill =  PurchaseBill.objects.filter(company=comp)
+  
         partydata = party.objects.all()
         allmodules= modules_list.objects.get(company=staff.company,status='New')
         context = {'purchasebill': purchasebill,'partydata': partydata,'allmodules': allmodules, 'company': comp}
@@ -4817,7 +4823,88 @@ def shareGSTR2purchaseBillToEmail(request):
     except Exception as e:
         print(e)
         messages.error(request, f'{e}')
-        return redirect(gstrr2)   
+        return redirect(gstrr2) 
+
+
+def purchasefilterbyDate(request):
+  if 'staff_id' in request.session:
+        staff_id = request.session['staff_id']
+  else:
+        return redirect('/')
+
+  staff = staff_details.objects.get(id=staff_id)
+  comp = company.objects.get(id=staff.company.id)
+
+    # Filter PurchaseBill instances related to the specific company
+
+    # Filter party instances related to the specific company
+  
+
+  from_date = request.GET.get('fdate', '')
+  to_date = request.GET.get('edate', '')
+
+  if from_date and to_date:
+    # Perform filtering with date range
+    data = PurchaseBill.objects.filter(company=comp,billdate__gte=from_date,billdate__lte=to_date)
+
+  else:
+    # Handle the case when either 'fdate' or 'edate' is not provided
+    data = PurchaseBill.objects.filter(company=comp)
+  data_list = []
+  for d in data: 
+      data = {
+                'party_gstNo': d.party.gst_no,
+                'party_partyName': d.party.party_name,
+                'billno' : d.billno,        	
+                'billdate':d.billdate,
+                'grandtotal':d.grandtotal,
+                'taxamount':d.taxamount,
+                'subtotal':d.subtotal,
+                'igst':d.igst,
+                'cgst':d.cgst,
+                'sgst':d.sgst,
+                'supplyplace':d.supplyplace,
+		
+		
+           }
+      data_list.append(data)
+      data_list = serialize('json', data_list)
+    # Return JSON response
+  return JsonResponse(data_list, safe=False)
+
+    # return render(request, 'company/gstr_2.html', {'staff':staff,'company': comp,'purchasebill': purchasebill, 'partydata': partydata,'allmodules':allmodules,'d1':d1,'d2':d2})
+  
+def purchasefilter(request):
+  if 'staff_id' in request.session:
+        staff_id = request.session['staff_id']
+  else:
+        return redirect('/')
+
+  staff = staff_details.objects.get(id=staff_id)
+  comp = company.objects.get(id=staff.company.id)
+  filter_value = request.GET.get('filter')
+  fdate = request.GET.get('fdate')
+  edate = request.GET.get('edate')
+
+  purchases = PurchaseBill.objects.filter(company=comp)
+    # Apply date range filter if both fdate and edate are present
+  if fdate and edate:
+        purchases = purchases.filter(company=comp, billdate__gte=fdate, billdate__lte=edate)
+
+  if filter_value == '1':
+        # Filter data where GST fields have values
+        purchases = purchases.exclude(party__gst_no__exact='')
+
+  elif filter_value == '2':
+        # Filter data where GST fields have no values
+        purchases = purchases.filter(party__gst_no='')
+
+  data_list = serialize('json', purchases)
+    # Convert QuerySet to list of dictionaries
+  
+    # Return JSON response
+  return JsonResponse(data_list, safe=False)
+    
 
 
 
