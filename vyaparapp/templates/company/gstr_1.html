@@ -101,6 +101,13 @@
         page-break-inside: auto!important;
 
     } */
+    .active {
+        background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important; margin-bottom: 0;
+        color: rgb(30, 29, 29);
+        padding: 0.673rem;
+      }
+
+      
 </style>
 
 <div class="body-wrapper">
@@ -121,20 +128,7 @@
             <div class=" bg-light bg-light pb-0 mb-0 p-2" style="height:100%;width: 1250px;">
                 <div class="mr-auto d-flex pt-4">
 
-                    <!-- <div class="filtr_with_date_between d-flex d-inline h-100" style="margin-right: 700px;">
-                        <form action="#" method="get" class="d-flex d-inline" onsubmit="return validateDates()">
-
-                            <label class="mx-1 py-1" for="fromDate">From (Month/Year):</label>
-                            <input type="month" id="fromDate" name="fromDate"
-                                style="width: 100px; border-radius: 10px; background-color: rgba(246,249,252,255);">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <label for="toDate">To (Month/Year):</label>
-                            <input type="month" id="toDate" name="toDate"
-                                style="width: 100px; border-radius: 10px; background-color: rgba(246,249,252,255);">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <input type="submit" value="Submit" style="size: 5px ;">
-
-                    </div> -->
+                    
 
 
 
@@ -156,7 +150,6 @@
                     <br><br><br>
                     <a href="{% url 'companyreport' %}" class="close-button"><button style="margin-left: 550px;"
                             title="close" class="btn btn-close" id="closeButton"></button></a>
-                    <!-- <button style="margin-left: 550px;" title="close" class="btn btn-close" id="closeButton"></button> -->
 
 
 
@@ -170,7 +163,7 @@
                     <button class="btn btn-sm" type="button" onclick="exportToExcel()" title="EXPORT"><span><img
                                 width="22px" src="{% static 'assets/excel2.png' %}" alt="EXPORT"></span></button>
                     <button class="btn btn-sm btn_print" type="button" onclick="exportToPDF()"
-                        title="DOWNLOAD"><span><img width="18px" src="{% static 'images/pdfdownload.png' %}"
+                        title="PDF"><span><img width="18px" src="{% static 'images/pdfdownload.png' %}"
                                 alt="DOWNLOAD"></span></button>
 
                     <a class="text-dark" data-toggle="dropdown">
@@ -230,7 +223,7 @@
 
                                     <div id="pdfdwnld">
                                         <h4
-                                        style="color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important; margin-bottom: 0;">
+                                        style="color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important; margin-bottom: 0; text-align: center;">
                                         GSTR 1 report</h4>
 
                                         <div class="row m-0 p-0 pt-3 " id="salediv" data-title="Sale">
@@ -453,7 +446,7 @@
                             id="share_to_email_form" autocomplete="off">
                             {% csrf_token %}
                             <div class="form-group">
-                                <input type="text" id="sale-salereturn" name="sale_salereturn">
+                                <input type="text" id="sale-salereturn" name="sale_salereturn" hidden>
                                 <label for="emailIds">Email IDs</label>
                                 <textarea class="form-control text-dark" name="email_ids" id="emailIds" rows="5"
                                     placeholder="Multiple emails can be added by separating with a comma(,)."
@@ -499,105 +492,7 @@
 
 <script>
 
-
-    // $(document).ready(function () {
-    //     $('#share_with_email').on('click', function () {
-    //         var emailsInput = document.getElementById('emailIds');
-    //         var emailsString = emailsInput.value.trim();
-
-    //         var emails = emailsString.split(',').map(function (email) {
-    //             return email.trim();
-    //         });
-
-    //         var emailRegex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-
-    //         var invalidEmails = []
-    //         if (emailsString == "") {
-    //             alert('Enter valid email addresses..')
-    //         }
-    //         else {
-    //             for (var i = 0; i < emails.length; i++) {
-    //                 var currentEmail = emails[i];
-
-    //                 if (currentEmail != "" && !emailRegex.test(currentEmail)) {
-    //                     console.log(currentEmail + ' is invalid!');
-    //                     invalidEmails.push(currentEmail)
-    //                 }
-    //             }
-
-    //             if (invalidEmails.length > 0) {
-    //                 alert('Invalid emails..Please check!\n' + invalidEmails)
-    //                 // alert(invalidEmails)
-    //             } else {
-    //                 $('#share_to_email_form').submit();
-    //             }
-    //         }
-    //     })
-    // });
-
-
-    // function shareOnWhatsApp() {
-    //     var url = window.location.href;
-    //     var text = url;
-    //     text = encodeURIComponent(text);
-    //     var whatsappUrl = "whatsapp://send?text=" + text;
-    //     window.location.href = whatsappUrl;
-    // }
-
-
-    // function exportToExcel() {
-    //     const table = document.getElementById('gstr1');
-    //     const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
-    //     XLSX.writeFile(wb, "gstr1.xlsx");
-    // }
-
-    // function printSection(sectionId) {
-    //     var printContents = document.getElementById(sectionId).innerHTML;
-    //     var originalContents = document.body.innerHTML;
-
-    //     document.body.innerHTML = printContents;
-
-    //     window.print();
-
-    //     document.body.innerHTML = originalContents;
-    // }
-
-    // function printSection(pdfdwnld) {
-    //             var printContents = document.getElementById(pdfdwnld).innerHTML;
-    //             var originalContents = document.body.innerHTML;
-
-    //             // Create a new temporary div to hold the section content to print
-    //             var printContainer = document.createElement('div');
-    //             printContainer.innerHTML = printContents;
-
-    //             // Append the section content to the body
-    //             document.body.innerHTML = '';
-    //             document.body.appendChild(printContainer);
-
-    //             // Print the contents
-    //             window.print();
-
-    //             // Restore the original content
-    //             document.body.innerHTML = originalContents;
-    //         }
-
-
-
-
-    // function exportToPDF() {
-    //     var content = document.getElementById('pdfdwnld');
-
-    //     var opt = {
-    //         margin: 0.1,
-    //         filename: 'GSTR1.pdf',
-    //         image: { type: 'jpeg', quality: 0.98 },
-    //         html2canvas: { scale: 10 , scrollX:0 },
-    //         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    //     };
-
-    //     html2pdf().set(opt).from(content).save();
-    //     // html2pdf(content,opt).save();
-    // }
+ 
     function exportToPDF() {
         var content = document.getElementById('pdfdwnld');
 
@@ -611,6 +506,8 @@
 
         html2pdf().set(opt).from(content).save();
     }
+
+    
 
 
     function toggleDropdown() {
@@ -813,85 +710,7 @@
 
 
 
-<!-- <script>
-    var activatedTabId = 1;
 
-    // Document ready function to set up event listeners
-    $(document).ready(function () {
-        // Set up event listener for tab activation
-        $('ul.nav-tabs a[data-toggle="tab"]').on('shown.bs.tab', function (event) {
-            // Get the ID of the activated tab
-            activatedTabId = $(event.target).attr('href').substring(1);
-            console.log('Activated tab ID:', activatedTabId);
-        });
-    });
-
-    // Function to print the selected section
-    function printSection() {
-        // Get the activated tab ID when the print function is called
-        var id = activatedTabId;
-
-        // Clone the specified element
-        const pdfCard = document.getElementById('pdfdwnld').cloneNode(true);
-        pdfCard.style.color = 'black';
-        pdfCard.style.backgroundColor = '#243e54';
-
-        // Create a new window for printing
-        const printWindow = window.open('', '');
-        const pageTitle = printWindow.document.createElement('h1');
-        pageTitle.style.textAlign = "center";
-        pageTitle.style.color = "black";
-        pageTitle.textContent = 'GSTR1';
-
-        const h1Element = printWindow.document.createElement('h2');
-        h1Element.style.color = "black";
-        h1Element.textAlign = "center";
-        // h1Element.textContent = (id === 'salediv') ? 'Sale' : 'Sale Return';
-        // if (id=='salediv') {
-        //     h1Element.textContent = "Sale";
-        // }       
-        // else {
-        //     h1Element.textContent = "Sale Return";
-        // }
-        // Create a style element and set its content
-        var styleElement = printWindow.document.createElement("style");
-        styleElement.textContent = `
-            body {
-                background-color: #333;
-                color : black;
-                font-family: Arial, sans-serif;
-                /* Add more styles as needed */
-            }
-            h2, h1 {
-                color: #333;
-                /* Add more styles as needed */
-            }
-        `;
-
-        // Append elements to the new window
-        printWindow.document.body.appendChild(pageTitle);
-        printWindow.document.body.appendChild(h1Element);
-        printWindow.document.body.appendChild(pdfCard);
-
-        // Copy stylesheets from the original document
-        const stylesheets = document.styleSheets;
-        for (let i = 0; i < stylesheets.length; i++) {
-            const stylesheet = stylesheets[i];
-            if (stylesheet.href) {
-                const link = printWindow.document.createElement('link');
-                link.rel = 'stylesheet';
-                link.href = stylesheet.href;
-                printWindow.document.head.appendChild(link);
-            }
-        }
-
-        // Trigger the print dialog for the new window
-        printWindow.print();
-
-        // Close the new window after printing
-        printWindow.close();
-    }
-</script> -->
 
 <script>
     var activatedTabId = 1;
@@ -921,7 +740,7 @@
         const pageTitle = printWindow.document.createElement('h1');
         pageTitle.style.textAlign = "center";
         pageTitle.style.color = "black";
-        pageTitle.textContent = 'GSTR1';
+        pageTitle.textContent = 'GSTR1 REPORT';
 
         const h1Element = printWindow.document.createElement('h2');
         h1Element.style.color = "black";

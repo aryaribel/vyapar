@@ -4764,12 +4764,12 @@ def sharepurchaseBillToEmail(request):
         pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
         pdf = result.getvalue()
         filename = f'Purchase Bill - {comp.company_name}.pdf'
-        subject = f"Purchase Bill Receipt - {comp.company_name}"
-        email = EmailMessage(subject, f"Hi,\nPlease find the attached Receipt of Purchase Bill -{comp.company_name}. \n{email_message}\n\n--\nRegards,\n{comp.company_name}\n{comp.address}\n{comp.city} - {comp.state}\n{comp.contact}", from_email=settings.EMAIL_HOST_USER, to=emails_list)
+        subject = f"GSTR 1 REPORT - {comp.company_name}"
+        email = EmailMessage(subject, f"Hi,\nGSTR1 report -{comp.company_name}. \n{email_message}\n\n--\nRegards,\n{comp.company_name}\n{comp.address}\n{comp.city} - {comp.state}\n{comp.contact}", from_email=settings.EMAIL_HOST_USER, to=emails_list)
         email.attach(filename, pdf, "application/pdf")
         email.send(fail_silently=False)
 
-        messages.success(request, 'Purchase Bill has been shared via email successfully..!')
+        messages.success(request, 'GSTR 1 report has been shared via email successfully..!')
         return redirect(gstrnew1)
     except Exception as e:
         print(e)
@@ -4789,17 +4789,30 @@ def shareGSTR2purchaseBillToEmail(request):
         emails_string = request.POST['email_ids']
         fdate = request.POST['fdate']
         edate = request.POST['edate']
-
+        filter_value = request.POST['filterValue']
         # Split the string by commas and remove any leading or trailing whitespace
         emails_list = [email.strip() for email in emails_string.split(',')]
         email_message = request.POST['email_message']
+        purchasebill = PurchaseBill.objects.filter(company=comp)
+        print(fdate,edate,filter_value,purchasebill)
         # print(emails_list)
         if fdate and edate:
         # comp = company.objects.get(user_id=request.user.id)
-          purchasebill =  PurchaseBill.objects.filter(company=comp,billdate__gte=fdate,billdate__lte=edate)
-        else:
-          purchasebill =  PurchaseBill.objects.filter(company=comp)
-  
+          purchasebill =  purchasebill.filter(company=comp,billdate__gte=fdate,billdate__lte=edate)
+          print(fdate,edate,filter_value,purchasebill)
+
+        if filter_value == '1':
+        # Filter data where GST fields have values
+          purchasebill = purchasebill.exclude(party__gst_no__exact='')
+          print(fdate,edate,filter_value,purchasebill)
+
+        elif filter_value == '2':
+        # Filter data where GST fields have no values
+          purchasebill = purchasebill.filter(party__gst_no='')
+          print(fdate,edate,filter_value,purchasebill)
+
+
+
         partydata = party.objects.all()
         allmodules= modules_list.objects.get(company=staff.company,status='New')
         context = {'purchasebill': purchasebill,'partydata': partydata,'allmodules': allmodules, 'company': comp}
@@ -4826,6 +4839,7 @@ def shareGSTR2purchaseBillToEmail(request):
         return redirect(gstrr2) 
 
 
+    
 def purchasefilterbyDate(request):
   if 'staff_id' in request.session:
         staff_id = request.session['staff_id']
@@ -4845,35 +4859,31 @@ def purchasefilterbyDate(request):
 
   if from_date and to_date:
     # Perform filtering with date range
-    data = PurchaseBill.objects.filter(company=comp,billdate__gte=from_date,billdate__lte=to_date)
+    data = PurchaseBill.objects.filter(company=comp, billdate__gte=from_date, billdate__lte=to_date)
 
   else:
     # Handle the case when either 'fdate' or 'edate' is not provided
     data = PurchaseBill.objects.filter(company=comp)
   data_list = []
-  for d in data: 
-      data = {
-                'party_gstNo': d.party.gst_no,
-                'party_partyName': d.party.party_name,
-                'billno' : d.billno,        	
-                'billdate':d.billdate,
-                'grandtotal':d.grandtotal,
-                'taxamount':d.taxamount,
-                'subtotal':d.subtotal,
-                'igst':d.igst,
-                'cgst':d.cgst,
-                'sgst':d.sgst,
-                'supplyplace':d.supplyplace,
-		
-		
-           }
-      data_list.append(data)
-      data_list = serialize('json', data_list)
-    # Return JSON response
-  return JsonResponse(data_list, safe=False)
+  for d in data:
+    item_data = {
+        'party_gstNo': d.party.gst_no,
+        'party_partyName': d.party.party_name,
+        'billno': d.billno,
+        'billdate': d.billdate,
+        'grandtotal': d.grandtotal,
+        'taxamount': d.taxamount,
+        'subtotal': d.subtotal,
+        'igst': d.igst,
+        'cgst': d.cgst,
+        'sgst': d.sgst,
+        'supplyplace': d.supplyplace,
+    }
+    data_list.append(item_data)
 
-    # return render(request, 'company/gstr_2.html', {'staff':staff,'company': comp,'purchasebill': purchasebill, 'partydata': partydata,'allmodules':allmodules,'d1':d1,'d2':d2})
-  
+ 
+  return JsonResponse({'data_list': data_list}, safe=False)
+
 def purchasefilter(request):
   if 'staff_id' in request.session:
         staff_id = request.session['staff_id']
@@ -4899,12 +4909,25 @@ def purchasefilter(request):
         # Filter data where GST fields have no values
         purchases = purchases.filter(party__gst_no='')
 
-  data_list = serialize('json', purchases)
-    # Convert QuerySet to list of dictionaries
-  
-    # Return JSON response
-  return JsonResponse(data_list, safe=False)
-    
+  data_list = []
+  for d in purchases:
+    item_data = {
+        'party_gstNo': d.party.gst_no,
+        'party_partyName': d.party.party_name,
+        'billno': d.billno,
+        'billdate': d.billdate,
+        'grandtotal': d.grandtotal,
+        'taxamount': d.taxamount,
+        'subtotal': d.subtotal,
+        'igst': d.igst,
+        'cgst': d.cgst,
+        'sgst': d.sgst,
+        'supplyplace': d.supplyplace,
+    }
+    data_list.append(item_data)
+
+ 
+  return JsonResponse({'data_list': data_list}, safe=False)
 
 
 

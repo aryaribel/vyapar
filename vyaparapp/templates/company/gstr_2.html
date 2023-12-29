@@ -173,7 +173,14 @@
         color: #fff;
         border-color: #fff;
     }
-
+    .table-data thead th
+    {
+        font-size: 12px;
+    }
+    .table-data tbody td
+    {
+        font-size: 12px;
+    }
     
 </style>
 
@@ -538,10 +545,10 @@
                     <form action="{% url 'shareGSTR2purchaseBillToEmail' %}" method="post" class="needs-validation" id="share_to_email_form" autocomplete="off">
                         {% csrf_token %}
                         <div class="form-group">
-                            <label for="">From</label>
-                            <input type="date" name="fdate">
-                            <label for="">To</label>
-                            <input type="date" name="edate">
+                            <input type="date" name="fdate" id="emailfdate" hidden>
+
+                            <input type="date" name="edate" id="emailedate" hidden><br>
+                            <input type="text" id="filtervalueid" value="0" name="filterValue" hidden>
                             <label for="emailIds">Email IDs</label>
                             <textarea class="form-control text-dark" name="email_ids" id="emailIds" rows="5"
                                 placeholder="Multiple emails can be added by separating with a comma(,)."
@@ -588,11 +595,11 @@
     
 
 
-    // function exportToExcel() {
-    //     const table = document.getElementById('gstr1');
-    //     const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
-    //     XLSX.writeFile(wb, "gstr1.xlsx");
-    // }
+    function exportToExcel(purchaseTable) {
+        const table = document.getElementById('purchaseTable');
+        const wb = XLSX.utils.table_to_book(table, { sheet: "Sheet1" });
+        XLSX.writeFile(wb, "gstr2.xlsx");
+    }
 
     function printSection(pdfdwnld) {
         var printContents = document.getElementById('pdfdwnld').innerHTML;
@@ -604,56 +611,37 @@
 
         document.body.innerHTML = originalContents;
     }
-    // function exportToPDF() {
-    //     console.log('print')
-    //     var content = document.getElementById('pdfdwnld');
+    
+  
 
-    //     var opt = {
-    //         margin: 0.1,
-    //         filename: 'GSTR1.pdf',
-    //         image: { type: 'jpeg', quality: 0.98 },
-    //         html2canvas: { scale: 2 },
-    //         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-    //     };
+            // function exportToPDF() {
+            //     var content = document.getElementById('pdfdwnld');
 
-    //     html2pdf().set(opt).from(content).save();
-    // }
-    // function exportToPDF() {
-    //     var content = document.getElementById('pdfdwnld');
+            //     var opt = {
+            //         margin: 0.1,
+            //         filename: 'GSTR2.pdf',
+            //         image: { type: 'jpeg', quality: 0.98 },
+            //         html2canvas: { scale: 2 },
+            //         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+            //     };
 
-    //     var opt = {
-    //         margin: 0.1,
-    //         filename: 'GSTR2.pdf',
-    //         image: { type: 'jpeg', quality: 0.98 },
-    //         html2canvas: { scale: 1 , scrollX:0 },
-    //         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    //     };
-
-    //     html2pdf().set(opt).from(content).save();
-    //         }
-
-        // html2pdf(content,opt).save();
-
-    //     html2canvas(content).then(canvas => {
-    //     var pdf = new jsPDF('p', 'mm', 'a4');
-    //     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297); // Adjust dimensions as needed
-    //     pdf.save('output.pdf');
-    // });
-
+            //     html2pdf().set(opt).from(content).save();
+            // }
             function exportToPDF() {
-                var content = document.getElementById('pdfdwnld');
-
-                var opt = {
-                    margin: 0.1,
-                    filename: 'GSTR2.pdf',
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: { scale: 2 },
-                    jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-                };
-
-                html2pdf().set(opt).from(content).save();
-            }
-
+        var content = document.getElementById('pdfdwnld');
+        var tbl = document.getElementById('purchaseTable');
+        tbl.classList.add('table-data');
+    
+        var opt = {
+            margin: 0.1,
+            filename: 'GSTR2.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'in', format: 'A4', orientation: 'landscape' } // Corrected 'orientation'
+        };
+    
+        html2pdf().set
+    }
 
 
 
@@ -662,20 +650,20 @@
         var dropdownContent = document.getElementById("myDropdown");
         dropdownContent.style.display = (dropdownContent.style.display === "block") ? "none" : "block";
     }
-    function exportToExcel() {
-        const table1 = document.getElementById('myTable');
-        const table2 = document.getElementById('myTable2');
+    // function exportToExcel() {
+    //     const table1 = document.getElementById('myTable');
+    //     const table2 = document.getElementById('myTable2');
 
-        const wb = XLSX.utils.book_new();
+    //     const wb = XLSX.utils.book_new();
 
-        const ws1 = XLSX.utils.table_to_sheet(table1);
-        const ws2 = XLSX.utils.table_to_sheet(table2);
+    //     const ws1 = XLSX.utils.table_to_sheet(table1);
+    //     const ws2 = XLSX.utils.table_to_sheet(table2);
 
-        XLSX.utils.book_append_sheet(wb, ws1, 'Sale'); // Add the first sheet to the workbook
-        XLSX.utils.book_append_sheet(wb, ws2, 'Sale return'); // Add the second sheet to the workbook
+    //     XLSX.utils.book_append_sheet(wb, ws1, 'Sale'); // Add the first sheet to the workbook
+    //     XLSX.utils.book_append_sheet(wb, ws2, 'Sale return'); // Add the second sheet to the workbook
 
-        XLSX.writeFile(wb, 'gstr1.xlsx');
-    }
+    //     XLSX.writeFile(wb, 'gstr1.xlsx');
+    // }
 </script>
 <script>
     var table = document.getElementById("myTable");
@@ -864,11 +852,13 @@ console.log('date1',startDate)
 </script>
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-
 <script>
     $(document).ready(function () {
       $('#fdate, #edate').change(function () {
+        $('#emailfdate').val($('#fdate').val());
+        $('#emailedate').val($('#edate').val());
         updatePurchaseData();
+       
       });
   
       function updatePurchaseData() {
@@ -881,10 +871,11 @@ console.log('date1',startDate)
             data: { fdate: fdate, edate: edate },
             type: 'GET',
             success: function (data) {
-              var dataArray = JSON.parse(data);
-              // Handle the response from Django if needed
-              console.log('data received',dataArray);
-              displayDataInTable(dataArray)
+               
+                var dataArray = data.data_list;  // Access the array within the 'data_list' property
+                // Handle the response from Django if needed
+                console.log('data received', dataArray);
+                displayDataInTable(dataArray);
             },
             error: function (error) {
               console.error(error);
@@ -905,6 +896,7 @@ console.log('date1',startDate)
       // Event handler for dropdown items
       $('#filterDropdown li').click(function () {
         var filterValue = $(this).data('filter');
+        $('#filtervalueid').val(filterValue);
         updatePurchaseData(filterValue);
       });
   
@@ -919,9 +911,10 @@ console.log('date1',startDate)
           data: { filter: filterValue, fdate: fdate, edate: edate },
           type: 'GET',
           success: function (data) {
-              var dataArray = JSON.parse(data); 
-              console.log('data received',dataArray);
-              displayDataInTable(dataArray) 
+            var dataArray = data.data_list;  // Access the array within the 'data_list' property
+            // Handle the response from Django if needed
+            console.log('data received', dataArray);
+            displayDataInTable(dataArray);
             },
           error: function (error) {
             console.error(error);
@@ -929,6 +922,8 @@ console.log('date1',startDate)
         });
       }
     });
+
+
     function displayDataInTable(data) {
               var table = $('#purchaseTable');
               table.empty();  // Clear existing content
@@ -957,28 +952,29 @@ console.log('date1',startDate)
   
               // Add table body 
               var tbody = $('<tbody id="items-table-body"></tbody>').appendTo(table);
-  
+              
               // Add table rows with data
-              for (var i = 0; i < data.length; i++) {
-                  
-                  var row = $('<tr class="text-center"></tr>');
-                  row.append('<td>' + data[i].party_gstNo  + '</td>');  // Adjust property names
-                  row.append('<td>' + data[i].party_partyName + '</td>');  // Adjust property names
-                  row.append('<td>' + data[i].billno + '</td>');  // Adjust property names
-                  row.append('<td>' + data[i].billdate + '</td>');  // Adjust property names
-                  row.append('<td>' + data[i].grandtotal + '</td>');  // Adjust property names
-                  row.append('<td>' + data[i].taxamount + '</td>');  // Adjust property names
-                  row.append('<td>0</td>');  // Assuming Cess Rate is not available in data
-                  row.append('<td>' + data[i].subtotal + '</td>');  // Adjust property names
-                  row.append('<td>' + data[i].igst + '</td>');  // Assuming IGST is the tax rate
-                  row.append('<td>' + data[i].cgst + '</td>');  // Adjust property names
-                  row.append('<td>' + data[i].sgst + '</td>');  // Adjust property names
-                  row.append('<td>0</td>');  // Assuming Cess is not available in data
-                  row.append('<td>' + data[i].supplyplace + '</td>');  // Adjust property names
-                  tbody.append(row);
-              }
+              for (var i = 0; i <data.length; i++) {
+               
+                var row = $('<tr class="text-center"></tr>');
+                row.append('<td>' + data[i].party_gstNo  + '</td>');
+                row.append('<td>' + data[i].party_partyName + '</td>');
+                row.append('<td>' + data[i].billno + '</td>');
+                row.append('<td>' + data[i].billdate + '</td>');
+                row.append('<td>' + data[i].grandtotal + '</td>');
+                row.append('<td>' + data[i].taxamount + '</td>');
+                row.append('<td>0</td>');  // Assuming Cess Rate is not available in data
+                row.append('<td>' + data[i].subtotal + '</td>');
+                row.append('<td>' + data[i].igst + '</td>');
+                row.append('<td>' + data[i].cgst + '</td>');
+                row.append('<td>' + data[i].sgst + '</td>');
+                row.append('<td>0</td>');  // Assuming Cess is not available in data
+                row.append('<td>' + data[i].supplyplace + '</td>');
+                tbody.append(row);
+            }
           }
     
-  </script>
+</script>
+
 
 {% endblock %}
