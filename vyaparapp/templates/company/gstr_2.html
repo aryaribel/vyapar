@@ -185,8 +185,7 @@
 </style>
 
 <div class="body-wrapper">
-
-    <br><br><br>
+<div class="container-fluid">
     <div class="row p-0 m-0">
         <div class="row">
             <!-- <h1 class="h1 text-center pt-3 pb-2"
@@ -570,7 +569,7 @@
         </div>
     </div>
 </div>
-
+</div>
 </div>
 <script src="https://code.jquery.com/jquery-3.x.x.min.js"></script>
 
@@ -610,38 +609,44 @@
         window.print();
 
         document.body.innerHTML = originalContents;
+
+        setTimeout(function () {
+            window.location.href = "{% url 'gstrr2' %}";
+        }, 2000);
     }
     
   
 
-            // function exportToPDF() {
-            //     var content = document.getElementById('pdfdwnld');
-
-            //     var opt = {
-            //         margin: 0.1,
-            //         filename: 'GSTR2.pdf',
-            //         image: { type: 'jpeg', quality: 0.98 },
-            //         html2canvas: { scale: 2 },
-            //         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-            //     };
-
-            //     html2pdf().set(opt).from(content).save();
-            // }
             function exportToPDF() {
-        var content = document.getElementById('pdfdwnld');
-        var tbl = document.getElementById('purchaseTable');
-        tbl.classList.add('table-data');
+                var content = document.getElementById('pdfdwnld');
+
+                var opt = {
+                    margin: 0.1,
+                    filename: 'GSTR2.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'in', format: 'a4', orientation: 'landscape' }
+                };
+
+                html2pdf().set(opt).from(content).save();
+            }
+
+
+    //         function exportToPDF() {
+    //     var content = document.getElementById('pdfdwnld');
+    //     var tbl = document.getElementById('purchaseTable');
+    //     tbl.classList.add('table-data');
     
-        var opt = {
-            margin: 0.1,
-            filename: 'GSTR2.pdf',
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: 'in', format: 'A4', orientation: 'landscape' } // Corrected 'orientation'
-        };
+    //     var opt = {
+    //         margin: 0.1,
+    //         filename: 'GSTR2.pdf',
+    //         image: { type: 'jpeg', quality: 0.98 },
+    //         html2canvas: { scale: 2 },
+    //         jsPDF: { unit: 'in', format: 'A4', orientation: 'landscape' } // Corrected 'orientation'
+    //     };
     
-        html2pdf().set
-    }
+    //     html2pdf().set
+    // }
 
 
 
