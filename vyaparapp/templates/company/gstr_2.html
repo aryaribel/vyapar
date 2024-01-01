@@ -182,6 +182,24 @@
         font-size: 12px;
     }
     
+
+
+
+    @media print{
+        body{
+            visibility: hidden !important; /* hide everything in body when in print mode*/
+        }
+        .printContainer {
+            visibility: visible !important; /* Override the rule above to only show the printables*/
+            position: absolute;
+            z-index: 99999;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-size: large;
+        } 
+    }
 </style>
 
 <div class="body-wrapper">
@@ -244,7 +262,7 @@
 
                 </div>
                 <div class="option_btn d-flex align-items-center" style="margin-left: 1000px;">
-                    <button class="btn btn-sm" type="button" onclick="printSection()"
+                    <button class="btn btn-sm btn_print" type="button"
                         title="PRINT"><span><img width="22px" src="{% static 'assets/printer1.png' %}"
                                 alt="PRINT"></span></button>
                     <button class="btn btn-sm" type="button" onclick="exportToExcel()" title="EXPORT"><span><img
@@ -600,20 +618,38 @@
         XLSX.writeFile(wb, "gstr2.xlsx");
     }
 
-    function printSection(pdfdwnld) {
-        var printContents = document.getElementById('pdfdwnld').innerHTML;
-        var originalContents = document.body.innerHTML;
+    // function printSection(pdfdwnld) {
+    //     var printContents = document.getElementById('pdfdwnld').innerHTML;
+    //     var originalContents = document.body.innerHTML;
 
-        document.body.innerHTML = printContents;
+    //     document.body.innerHTML = printContents;
 
-        window.print();
+    //     window.print();
 
-        document.body.innerHTML = originalContents;
+    //     document.body.innerHTML = originalContents;
 
-        setTimeout(function () {
-            window.location.href = "{% url 'gstrr2' %}";
-        }, 2000);
-    }
+    //     setTimeout(function () {
+    //         window.location.href = "{% url 'gstrr2' %}";
+    //     }, 2000);
+    // }
+
+
+    $(document).on('click', '.btn_print', function (event) {
+    $('#purchaseTable').removeClass('table-hover');
+    var printContents = $("#pdfdwnld").clone(); // Clone the content-div to avoid modifying the original content
+    printContents.find('.hideon-print').remove(); // Remove columns by class name
+
+    var $printerDiv = $('<div class="printContainer" id=printContainer></div>');
+    $printerDiv.html(printContents.html());
+    $('body').append($printerDiv).addClass("printingContent");
+    var h1Element = document.createElement("h1");
+    var head = document.getElementById("printContainer");
+    head.insertBefore(h1Element, head.firstChild);
+    window.print();
+    $printerDiv.remove();
+    $('body').removeClass("printingContent");
+
+    });
     
   
 
