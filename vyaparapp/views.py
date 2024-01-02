@@ -4763,7 +4763,7 @@ def sharepurchaseBillToEmail(request):
         result = BytesIO()
         pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
         pdf = result.getvalue()
-        filename = f'Purchase Bill - {comp.company_name}.pdf'
+        filename = f'GSTR 1 - {comp.company_name}.pdf'
         subject = f"GSTR 1 REPORT - {comp.company_name}"
         email = EmailMessage(subject, f"Hi,\nGSTR1 report -{comp.company_name}. \n{email_message}\n\n--\nRegards,\n{comp.company_name}\n{comp.address}\n{comp.city} - {comp.state}\n{comp.contact}", from_email=settings.EMAIL_HOST_USER, to=emails_list)
         email.attach(filename, pdf, "application/pdf")
@@ -4825,13 +4825,13 @@ def shareGSTR2purchaseBillToEmail(request):
         result = BytesIO()
         pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
         pdf = result.getvalue()
-        filename = f'Purchase Bill - {comp.company_name}.pdf'
-        subject = f"Purchase Bill Receipt - {comp.company_name}"
+        filename = f'GSTR 2  - {comp.company_name}.pdf'
+        subject = f"GSTR 2 BILL DETAILS - {comp.company_name}"
         email = EmailMessage(subject, f"Hi,\nPlease find the attached Receipt of Purchase Bill -{comp.company_name}. \n{email_message}\n\n--\nRegards,\n{comp.company_name}\n{comp.address}\n{comp.city} - {comp.state}\n{comp.contact}", from_email=settings.EMAIL_HOST_USER, to=emails_list)
         email.attach(filename, pdf, "application/pdf")
         email.send(fail_silently=False)
 
-        messages.success(request, 'Purchase Bill has been shared via email successfully..!')
+        messages.success(request, 'GSTR 2 report shared via email successfully..!')
         return redirect(gstrr2)
     except Exception as e:
         print(e)
